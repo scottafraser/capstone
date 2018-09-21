@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import SpotifyWebApi from "spotify-web-api-js";
 
@@ -17,7 +16,9 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: "Not Checked", albumArt: "" }
+      user: 
+      nowPlaying: { name: "Not Checked", albumArt: "" },
+      userLists: { name: "stuff" }
     };
   }
 
@@ -34,6 +35,17 @@ class App extends Component {
     return hashParams;
   }
 
+  getMe() {
+  spotifyApi.getMe().then(response => {
+    this.setState({
+      nowPlaying: {
+        name: response.item.name,
+        albumArt: response.item.album.images[0].url
+      }
+    });
+  });
+}
+
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
       this.setState({
@@ -45,11 +57,22 @@ class App extends Component {
     });
   }
 
+  getPlaylists() {
+    spotifyApi.getUserPlaylists().then(response => {
+      console.log(response);
+      this.setState({
+        nowPlaying: {
+          name: response.playlist
+        }
+      });
+    });
+  }
+
   render() {
     return (
       <div className="App">
         <a href="http://localhost:8888"> Login to Spotify </a>
-        <div>Now Playing: {this.state.nowPlaying.name}</div>
+        <div>User: {this.state.nowPlaying.name}</div>
         <div>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }} />
         </div>
@@ -58,6 +81,10 @@ class App extends Component {
             Check Now Playing
           </button>
         )}
+        <br />
+        <button onClick={() => this.getPlaylists()}>
+          Check User Playlists
+        </button>
       </div>
     );
   }
