@@ -19,7 +19,7 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      user: { name: "" },
+      user: { name: "", userImage: "" },
       nowPlaying: { name: "", albumArt: "" },
       userLists: { name: "stuff" },
       savedTracks: []
@@ -41,11 +41,15 @@ class App extends Component {
 
   componentDidMount() {
     spotifyApi.getMe().then(response => {
+      console.log(response);
+
       this.setState({
         user: {
-          name: response.display_name
+          name: response.display_name,
+          userImage: response.images[0].url
         }
       });
+      console.log(this.state.user);
     });
   }
 
@@ -82,7 +86,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <NavBar login={this.state.user.name} />
+        <NavBar
+          loginName={this.state.user.name}
+          loginPic={this.state.user.userImage}
+        />
         <div>
           <img src={recordPic} style={{ height: 150 }} />
           <h1>{this.state.nowPlaying.name}</h1>
