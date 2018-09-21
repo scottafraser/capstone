@@ -17,8 +17,9 @@ class App extends Component {
     this.state = {
       loggedIn: token ? true : false,
       user: { name: "" },
-      nowPlaying: { name: "Not Checked", albumArt: "" },
-      userLists: { name: "stuff" }
+      nowPlaying: { name: "", albumArt: "" },
+      userLists: { name: "stuff" },
+      savedTracks: []
     };
   }
 
@@ -57,6 +58,15 @@ class App extends Component {
     });
   }
 
+  getSavedTracks() {
+    spotifyApi.getMySavedTracks().then(response => {
+      console.log(response.items);
+      this.setState({
+        savedTracks: response.items
+      });
+    });
+  }
+
   getPlaylists() {
     spotifyApi.getUserPlaylists().then(response => {
       console.log(response);
@@ -69,6 +79,8 @@ class App extends Component {
   }
 
   render() {
+    const list = this.state.tracksList;
+
     return (
       <div className="App">
         <div>
@@ -88,6 +100,18 @@ class App extends Component {
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
+        <button onClick={() => this.getSavedTracks()}>
+          Check User Saved Tracks
+        </button>
+        {this.state.savedTracks.map((song, index) => (
+          <li key={index}>
+            {song.track.artists[0].name}
+            <br />
+            {song.track.album.name}}<br />
+            {console.log(song.track.album.images)}
+            <img src={song.track.album.images[0].url} />
+          </li>
+        ))}
       </div>
     );
   }
