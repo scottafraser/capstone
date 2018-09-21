@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import "./App.css";
 import SpotifyWebApi from "spotify-web-api-js";
+import recordPic from "../images/recordPlayer.png";
+import NavBar from "./NavBar";
+import PropTypes from "prop-types";
 
 //spotify library
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     const params = this.getHashParams();
     console.log(params);
     const token = params.access_token;
@@ -38,7 +41,6 @@ class App extends Component {
 
   componentDidMount() {
     spotifyApi.getMe().then(response => {
-      console.log(response);
       this.setState({
         user: {
           name: response.display_name
@@ -69,7 +71,6 @@ class App extends Component {
 
   getPlaylists() {
     spotifyApi.getUserPlaylists().then(response => {
-      console.log(response);
       this.setState({
         nowPlaying: {
           name: response.playlist
@@ -79,15 +80,11 @@ class App extends Component {
   }
 
   render() {
-    const list = this.state.tracksList;
-
     return (
       <div className="App">
+        <NavBar login={this.state.user.name} />
         <div>
-          <a href="http://localhost:8888"> Login to Spotify </a>
-        </div>
-        <div>User: {this.state.user.name}</div>
-        <div>
+          <img src={recordPic} style={{ height: 150 }} />
           <h1>{this.state.nowPlaying.name}</h1>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }} />
         </div>
@@ -107,14 +104,19 @@ class App extends Component {
           <li key={index}>
             {song.track.artists[0].name}
             <br />
-            {song.track.album.name}}<br />
+            {song.track.album.name}
+            <br />
             {console.log(song.track.album.images)}
-            <img src={song.track.album.images[0].url} />
+            <img src={song.track.album.images[1].url} />
           </li>
         ))}
       </div>
     );
   }
 }
+
+App.propTypes = {
+  login: PropTypes.object
+};
 
 export default App;
