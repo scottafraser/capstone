@@ -36,7 +36,7 @@ function ButtonAppBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.grow}>
-            News
+            Scott's Sweet Spotify Thing
           </Typography>
           <div>{props.login}</div>
           <Button href="http://localhost:8888" color="inherit">
