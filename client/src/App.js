@@ -16,7 +16,7 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      user: 
+      user: { name: "" },
       nowPlaying: { name: "Not Checked", albumArt: "" },
       userLists: { name: "stuff" }
     };
@@ -35,16 +35,16 @@ class App extends Component {
     return hashParams;
   }
 
-  getMe() {
-  spotifyApi.getMe().then(response => {
-    this.setState({
-      nowPlaying: {
-        name: response.item.name,
-        albumArt: response.item.album.images[0].url
-      }
+  componentDidMount() {
+    spotifyApi.getMe().then(response => {
+      console.log(response);
+      this.setState({
+        user: {
+          name: response.display_name
+        }
+      });
     });
-  });
-}
+  }
 
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
@@ -71,9 +71,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <a href="http://localhost:8888"> Login to Spotify </a>
-        <div>User: {this.state.nowPlaying.name}</div>
         <div>
+          <a href="http://localhost:8888"> Login to Spotify </a>
+        </div>
+        <div>User: {this.state.user.name}</div>
+        <div>
+          <h1>{this.state.nowPlaying.name}</h1>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }} />
         </div>
         {this.state.loggedIn && (
