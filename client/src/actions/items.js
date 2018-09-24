@@ -5,6 +5,13 @@ export function itemsHasErrored(bool) {
     };
 }
 
+export function loggedIn(bool) {
+    return {
+        type: 'LOG_IN',
+        loggedIn: bool
+    }
+}
+
 export function itemsIsLoading(bool) {
     return {
         type: 'ITEMS_IS_LOADING',    
@@ -37,9 +44,9 @@ export function itemsFetchData(url) {
     .catch(() => dispatch(itemsHasErrored(true)));
 
     }    
-    
-    
 }
+
+
 
 export function deleteItem(index) {
     return{
