@@ -17,10 +17,22 @@ export function itemsIsLoading(state = false, action) {
     }
 }
 
+export function loggedIn(state = false, action) {
+    switch (action.type) {
+        case 'LOG_IN':
+            return action.loggedIn;
+
+            default:
+            return state
+    }
+}
+
 export function items(state = [], action) {
     switch (action.type) {
         case 'ITEMS_FETCH_DATA_SUCCESS':
-            return action.items.resultsPage.results.event;
+            console.log(action.items);
+
+            return action.items
 
         case 'DELETE_ITEM':
             return [
@@ -35,7 +47,10 @@ export function items(state = [], action) {
 
 export function user(state = { name: "", userImage: "" }, action) {
     switch (action.type) {
-        case 'SET_USER'
+        case 'SET_USER':
+        let currentUser = Object.assign({}, state[action.name])
+            
+
     }
 }
 
