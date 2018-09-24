@@ -1,21 +1,40 @@
 import React, { Component } from "react";
 import "./App.css";
+import { connect } from "react-redux";
 import SpotifyWebApi from "spotify-web-api-js";
 import recordPic from "../images/recordPlayer.png";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
 
+function getHashParams() {
+  var hashParams = {};
+  var e,
+    r = /([^&;=]+)=?([^&;]*)/g,
+    q = window.location.hash.substring(1);
+  e = r.exec(q);
+  while (e) {
+    hashParams[e[1]] = decodeURIComponent(e[2]);
+    e = r.exec(q);
+  }
+  return hashParams;
+}
+
 //spotify library
 const spotifyApi = new SpotifyWebApi();
+const params = getHashParams();
+const token = params.access_token;
+if (token) {
+  spotifyApi.setAccessToken(token);
+}
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    const params = this.getHashParams();
-    const token = params.access_token;
-    if (token) {
-      spotifyApi.setAccessToken(token);
-    }
+  // constructor(props) {
+  //   super(props);
+  //   const params = this.getHashParams();
+  //   const token = params.access_token;
+  //   if (token) {
+  //     spotifyApi.setAccessToken(token);
+  //   }
     this.state = {
       loggedIn: token ? true : false,
       user: { name: "", userImage: "" },
@@ -24,21 +43,9 @@ class App extends Component {
       savedTracks: [],
       playlists: []
     };
-  }
+  
 
-  getHashParams() {
-    var hashParams = {};
-    var e,
-      r = /([^&;=]+)=?([^&;]*)/g,
-      q = window.location.hash.substring(1);
-    e = r.exec(q);
-    while (e) {
-      hashParams[e[1]] = decodeURIComponent(e[2]);
-      e = r.exec(q);
-    }
-    return hashParams;
-  }
-
+ 
   componentDidMount() {
     spotifyApi.getMe().then(response => {
       this.setState({
@@ -119,4 +126,24 @@ App.propTypes = {
   login: PropTypes.object
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    loggedIn: token ? true : false,
+    user: { name: "", userImage: "" },
+    nowPlaying: { name: "", albumArt: "" },
+    hasErrored: state.itemsHasErrored,
+    isLoading: state.itemsIsLoading
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+    // fetchData: (url) => dispatch(itemsFetchData(url)),
+    // removeItem: (index) => dispatch(deleteItem(index))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
