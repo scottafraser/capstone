@@ -36,7 +36,25 @@ const styles = {
 
 function ButtonAppBar(props) {
   const { classes } = props;
-  console.log(props);
+  let loggy = 
+  <Button href="http://localhost:8888" color="inherit">
+    Login to Spotify
+  </Button>
+  
+  if (props.loggedIn) {
+    loggy =
+      <div className={classes.row}>
+      <h3>{props.loginName}</h3>
+      <Avatar
+        alt={props.login}
+        src={props.loginPic}
+        className={classNames(classes.avatar, classes.bigAvatar)}
+      />
+      </div>
+  }
+      
+  
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -49,19 +67,9 @@ function ButtonAppBar(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.grow}>
-            Scott's Sweet Spotify Thing
+            Sweet Spotify Thing
           </Typography>
-          <div className={classes.row}>
-            {props.login}
-            <Avatar
-              alt={props.login}
-              src={props.loginPic}
-              className={classNames(classes.avatar, classes.bigAvatar)}
-            />
-          </div>
-          <Button href="http://localhost:8888" color="inherit">
-            Login to Spotify
-          </Button>
+          {loggy}
         </Toolbar>
       </AppBar>
     </div>
