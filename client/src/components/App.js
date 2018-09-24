@@ -12,7 +12,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     const params = this.getHashParams();
-    console.log(params);
     const token = params.access_token;
     if (token) {
       spotifyApi.setAccessToken(token);
@@ -22,7 +21,8 @@ class App extends Component {
       user: { name: "", userImage: "" },
       nowPlaying: { name: "", albumArt: "" },
       userLists: { name: "stuff" },
-      savedTracks: []
+      savedTracks: [],
+      playlists: []
     };
   }
 
@@ -41,15 +41,12 @@ class App extends Component {
 
   componentDidMount() {
     spotifyApi.getMe().then(response => {
-      console.log(response);
-
       this.setState({
         user: {
           name: response.display_name,
           userImage: response.images[0].url
         }
       });
-      console.log(this.state.user);
     });
   }
 
@@ -64,61 +61,57 @@ class App extends Component {
     });
   }
 
-  getSavedTracks() {
-    spotifyApi.getMySavedTracks().then(response => {
-      console.log(response.items);
-      this.setState({
-        savedTracks: response.items
-      });
-    });
-  }
+  // getRecentTracks() {
+  //   spotifyApi.getMyRecentlyPlayedTracks().then(response => {
+  //     this.setState({ savedTracks: response.items });
+  //   });
+  // }
 
   getPlaylists() {
     spotifyApi.getUserPlaylists().then(response => {
-      this.setState({
-        nowPlaying: {
-          name: response.playlist
-        }
-      });
+      console.log(response)
+      this.setState({ playlists: response.items });
     });
   }
 
+
   render() {
-    return (
-      <div className="App">
-        <NavBar
-          loginName={this.state.user.name}
-          loginPic={this.state.user.userImage}
-        />
+    return <div className="App">
+        <NavBar loggedIn={this.state.loggedIn}loginName={this.state.user.name} loginPic={this.state.user.userImage} />
         <div>
           <img src={recordPic} style={{ height: 150 }} />
           <h1>{this.state.nowPlaying.name}</h1>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }} />
         </div>
-        {this.state.loggedIn && (
-          <button onClick={() => this.getNowPlaying()}>
+        {this.state.loggedIn && <button
+            onClick={() => this.getNowPlaying()}
+          >
             Check Now Playing
-          </button>
-        )}
+          </button>}
         <br />
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
-        <button onClick={() => this.getSavedTracks()}>
-          Check User Saved Tracks
-        </button>
-        {this.state.savedTracks.map((song, index) => (
-          <li key={index}>
+        {/* <button onClick={() => this.getRecentTracks()}>
+          Check Users Recent Tracks
+        </button> */}
+
+        {this.state.playlists.map((playlist, index) => <li key={index}>
+            {playlist.name}
+            <br />
+            <img src={playlist.images[0].url} />
+          </li>)}
+
+          {/* recent tracks
+        {this.state.savedTracks.map((song, index) => <li key={index}>
             {song.track.artists[0].name}
             <br />
             {song.track.album.name}
             <br />
             {console.log(song.track.album.images)}
             <img src={song.track.album.images[1].url} />
-          </li>
-        ))}
-      </div>
-    );
+          </li>)} */}
+      </div>;
   }
 }
 
