@@ -33,5 +33,11 @@ export function items(state = [], action) {
     }
 }
 
+export function user(state = { name: "", userImage: "" }, action) {
+    switch (action.type) {
+        case 'SET_USER'
+    }
+}
+
 //To re-iterate, every reducer will return a discrete property of the state, 
 // regardless of how many conditions are inside that reducer.
