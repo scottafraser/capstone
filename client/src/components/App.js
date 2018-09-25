@@ -5,7 +5,7 @@ import SpotifyWebApi from "spotify-web-api-js";
 import recordPic from "../images/recordPlayer.png";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
-import { itemsFetchDataSuccess } from "../actions/items";
+import { itemsFetchDataSuccess, setUser } from "../actions/items";
 
 
 
@@ -29,18 +29,18 @@ class App extends Component {
     //   savedTracks: [],
     //   playlists: []
     // };
-  getHashParams() {
-  var hashParams = {};
-  var e,
-    r = /([^&;=]+)=?([^&;]*)/g,
-    q = window.location.hash.substring(1);
-  e = r.exec(q);
-  while (e) {
-    hashParams[e[1]] = decodeURIComponent(e[2]);
-    e = r.exec(q);
-  }
-  return hashParams;
-}
+//   getHashParams() {
+//   var hashParams = {};
+//   var e,
+//     r = /([^&;=]+)=?([^&;]*)/g,
+//     q = window.location.hash.substring(1);
+//   e = r.exec(q);
+//   while (e) {
+//     hashParams[e[1]] = decodeURIComponent(e[2]);
+//     e = r.exec(q);
+//   }
+//   return hashParams;
+// }
  
   componentDidMount() {
     var hashParams = {};
@@ -59,16 +59,14 @@ class App extends Component {
       spotifyApi.setAccessToken(token);
     }
     spotifyApi.getMe().then(response => {
-      console.log(response);
-      
-      this.props.fetchData(response)
+      this.props.setUser(response)
       // this.setState({
       //   user: {
       //     name: response.display_name,
       //     userImage: response.images[0].url
       //   }
       // });
-    });
+    }); 
   }
 
   getNowPlaying() {
@@ -97,11 +95,13 @@ class App extends Component {
 
 
   render() {
-    console.log(this.props)
+    console.log(this.props.user)
     return <div className="App">
         <NavBar loggedIn={this.props.loggedIn}/>
       {/* <NavBar loggedIn={this.props.loggedIn} loginName={this.props.user.name} loginPic={this.state.user.userImage} /> */}
+      <p>{this.props.user.display_name}</p>
         {/* <div>
+
           <img src={recordPic} style={{ height: 150 }} />
           <h1>{this.state.nowPlaying.name}</h1>
           <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }} />
@@ -139,6 +139,8 @@ class App extends Component {
 }
 
 App.propTypes = {
+  user: PropTypes.object,
+  setUser: PropTypes.func,
   login: PropTypes.object
 };
 
@@ -155,8 +157,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
-    fetchData: (response) => dispatch(itemsFetchDataSuccess(response)),
+       setUser: (response) => dispatch(setUser(response)),
+    // fetchData: (response) => dispatch(itemsFetchDataSuccess(response)),
     // removeItem: (index) => dispatch(deleteItem(index))
   };
 };
