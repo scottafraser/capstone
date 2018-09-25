@@ -35,10 +35,16 @@ export function setUser(user) {
 }
 
 export function getUserCurrentSong(response) {
-    // console.log(response);
     return {
         type: 'GET_NOW_PLAYING',
         nowPlaying: response
+    }
+}
+
+export function getUserPlaylists(response) {
+    return {
+        type: 'GET_PLAYLISTS',
+        userPlaylists: response
     }
 }
 
