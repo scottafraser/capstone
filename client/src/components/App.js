@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./App.css";
+import "./App.scss";
 import { connect } from "react-redux";
 import SpotifyWebApi from "spotify-web-api-js";
 import record from "../images/record.jpeg";
@@ -87,11 +87,12 @@ class App extends Component {
           Check Users Recent Tracks
         </button> */}
         <div className="playlists">
-        {this.props.userPlaylists.map((playlist, index) => <li key={index}>
+        {this.props.userPlaylists.map((playlist, index) => 
+        <div key={index}>
             {playlist.name}
             <br />
             <img src={playlist.images[0].url} />
-          </li>)}
+          </div>)}
         </div>
       </div>;
   }
