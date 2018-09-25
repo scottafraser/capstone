@@ -5,14 +5,15 @@ export function itemsHasErrored(bool) {
     };
 }
 
-export function loggedIn(bool) {
+export function userIsLoggedIn(bool) {
     return {
-        type: 'LOG_IN',
-        loggedIn: bool
+        type: 'LOGGED_IN',
+        isLoggedIn: bool
     }
 }
 
 export function itemsIsLoading(bool) {
+
     return {
         type: 'ITEMS_IS_LOADING',    
         isLoading: bool
@@ -25,9 +26,8 @@ export function itemsFetchDataSuccess(items) {
         items
     };
 }
-
+// 
 export function setUser(user) {
-    console.log(user);
     return {
     type: 'SET_USER',
     user

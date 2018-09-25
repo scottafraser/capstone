@@ -41,16 +41,17 @@ function ButtonAppBar(props) {
     Login to Spotify
   </Button>
   
-  if (props.loggedIn) {
-    loggy =
-      <div className={classes.row}>
-      <h3>{props.loginName}</h3>
-      <Avatar
-        alt={props.login}
-        src={props.loginPic}
+  if (props.login === true) {
+    console.log(props.login + ' navbar');
+    
+    loggy = <div className={classes.row}>
+        <h3>{props.user.display_name}</h3>
+        <Avatar
+        alt={props.user.display_name}
+        src={props.user.images[0].url}
         className={classNames(classes.avatar, classes.bigAvatar)}
       />
-      </div>
+      </div>;
   }
       
   

@@ -5,7 +5,7 @@ import SpotifyWebApi from "spotify-web-api-js";
 import recordPic from "../images/recordPlayer.png";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
-import { itemsFetchDataSuccess, setUser } from "../actions/items";
+import { itemsFetchDataSuccess, setUser, userIsLoggedIn } from "../actions/items";
 
 
 
@@ -60,6 +60,8 @@ class App extends Component {
     }
     spotifyApi.getMe().then(response => {
       this.props.setUser(response)
+      let userLoggedIn = token ? true : false;
+      this.props.loggedIn(userLoggedIn);
       // this.setState({
       //   user: {
       //     name: response.display_name,
@@ -67,6 +69,7 @@ class App extends Component {
       //   }
       // });
     }); 
+    
   }
 
   getNowPlaying() {
@@ -95,11 +98,18 @@ class App extends Component {
 
 
   render() {
-    console.log(this.props.user)
+    
+      console.log(this.props)
     return <div className="App">
-        <NavBar loggedIn={this.props.loggedIn}/>
-      {/* <NavBar loggedIn={this.props.loggedIn} loginName={this.props.user.name} loginPic={this.state.user.userImage} /> */}
-      <p>{this.props.user.display_name}</p>
+    
+    
+      <NavBar user={this.props.user} login={this.props.isLoggedIn}/>
+        {/* <NavBar loggedIn={this.props.loggedIn} loginName={this.props.user.name} loginPic={this.state.user.userImage} /> */}
+        <p>
+          {this.props.user.display_name}
+          <br /> 
+          {this.props.user.email}
+        </p>
         {/* <div>
 
           <img src={recordPic} style={{ height: 150 }} />
@@ -125,7 +135,7 @@ class App extends Component {
             <img src={playlist.images[0].url} />
           </li>)} */}
 
-          {/* recent tracks
+        {/* recent tracks
         {this.state.savedTracks.map((song, index) => <li key={index}>
             {song.track.artists[0].name}
             <br />
@@ -139,15 +149,15 @@ class App extends Component {
 }
 
 App.propTypes = {
-  user: PropTypes.object,
+  thisUser: PropTypes.object,
   setUser: PropTypes.func,
-  login: PropTypes.object
+  isLoggedIn: PropTypes.bool
 };
 
 const mapStateToProps = (state) => {
   return {
     items: state.items,
-    loggedIn: state.loggedIn,
+    isLoggedIn: state.isLoggedIn,
     user: state.user,
     nowPlaying: state.nowPlaying,
     hasErrored: state.itemsHasErrored,
@@ -158,6 +168,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
        setUser: (response) => dispatch(setUser(response)),
+       loggedIn: (bool) => dispatch(userIsLoggedIn(bool))
     // fetchData: (response) => dispatch(itemsFetchDataSuccess(response)),
     // removeItem: (index) => dispatch(deleteItem(index))
   };
