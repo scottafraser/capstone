@@ -5,15 +5,7 @@ export function itemsHasErrored(bool) {
     };
 }
 
-export function userIsLoggedIn(bool) {
-    return {
-        type: 'LOGGED_IN',
-        isLoggedIn: bool
-    }
-}
-
 export function itemsIsLoading(bool) {
-
     return {
         type: 'ITEMS_IS_LOADING',    
         isLoading: bool
@@ -26,12 +18,19 @@ export function itemsFetchDataSuccess(items) {
         items
     };
 }
-// 
+
 export function setUser(user) {
     return {
     type: 'SET_USER',
     user
     }
+}
+
+export function userIsLoggedIn(bool) {
+  return {
+    type: "LOGGED_IN",
+    isLoggedIn: bool
+  };
 }
 
 export function getUserCurrentSong(response) {

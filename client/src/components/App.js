@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import "./App.css";
 import { connect } from "react-redux";
 import SpotifyWebApi from "spotify-web-api-js";
-import recordPic from "../images/recordPlayer.png";
+import record from "../images/record.jpeg";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
+import NowPlaying from './NowPlaying'
 import {
   itemsFetchDataSuccess,
   userPlaylists,
@@ -48,8 +49,6 @@ class App extends Component {
     });
   }
 
-
-
   getPlaylists() {
     spotifyApi.getUserPlaylists().then(response => {
       console.log(response)
@@ -57,28 +56,30 @@ class App extends Component {
     });
   }
 
-
   render() {
-    console.log(this.props.userPlaylists)
+    console.log(this.props)
+
+    if (this.props.hasErrored) {
+      return <p>Sorry! There was an error loading the items</p>;
+    }
+    if (this.props.isLoading) {
+      return <p>Loading…</p>;
+    }
+    console.log(this.props.isLoggedIn)
     return <div className="App">
-      <NavBar user={this.props.user} login={this.props.isLoggedIn}/>
-        <p>
-          {this.props.user.display_name}
-          <br /> 
-          {this.props.user.email}
-        </p>
-      <div>
-        <img src={recordPic} alt="recrd" style={{ height: 150 }} />
-      </div>
-      {this.props.isloggedIn && 
-      <div>
-        <button onClick={() => this.getNowPlaying()}>
-            Check Now Playing
-          </button>
-        <h1>{this.props.nowPlaying.name}</h1>
-        <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
-      </div>}
-      <br />
+        <NavBar user={this.props.user} login={this.props.isLoggedIn} />
+        <div>
+          <img src={record} alt="recrd" className="App-logo" style={{ height: 150 }} />
+        </div>
+        {this.props.isLoggedIn && <NowPlaying isLoggedIn={this.props.isLoggedIn} getNowPlaying={this.props.getSong} nowPlaying={this.props.nowPlaying}/> }
+        {/* {this.props.isLoggedIn && <div>
+            <button onClick={() => this.getNowPlaying()}>
+              Check Now Playing
+            </button>
+            <h1>{this.props.nowPlaying.name}</h1>
+            <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
+          </div>} */}
+        <br />
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
@@ -91,7 +92,6 @@ class App extends Component {
             <br />
             <img src={playlist.images[0].url} />
           </li>)}
-
       </div>;
   }
 }
