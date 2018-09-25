@@ -1,5 +1,12 @@
 .App {
   text-align: center;
+  background-image: linear-gradient(grey, black);
+  background-image: 100%;
+}
+
+.playlists {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 div,
@@ -27,6 +34,8 @@ button {
 .App-intro {
   font-size: large;
 }
+
+
 
 @keyframes App-logo-spin {
   from {

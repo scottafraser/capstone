@@ -86,12 +86,13 @@ class App extends Component {
         {/* <button onClick={() => this.getRecentTracks()}>
           Check Users Recent Tracks
         </button> */}
-
+        <div className="playlists">
         {this.props.userPlaylists.map((playlist, index) => <li key={index}>
             {playlist.name}
             <br />
             <img src={playlist.images[0].url} />
           </li>)}
+        </div>
       </div>;
   }
 }
