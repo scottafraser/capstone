@@ -34,18 +34,24 @@ export function setUser(user) {
     }
 }
 
-// export function itemsFetchData(url) {
+export function getUserCurrentSong(response) {
+    // console.log(response);
+    return {
+        type: 'GET_NOW_PLAYING',
+        nowPlaying: response
+    }
+}
+
+// export function itemsFetchData(response) {
 //     return (dispatch) => {
 //         dispatch(itemsIsLoading(true));
-//         fetch(url)
+//         response.json()
 //         .then((response) => {
 //             if(!response.ok) {
 //             throw Error(response.statusText);
 //         }
 //         dispatch(itemsIsLoading(false)); 
-//             console.log(response);
-//         return response;
-            
+//         return response;        
 //     })
 //     .then((response) => response.json())
 //     .then((items) => dispatch(itemsFetchDataSuccess(items)))
