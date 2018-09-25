@@ -49,8 +49,19 @@ export function user(state = {}, action) {
          return action.user
         default:
             return state;
-            
+    }
+}
 
+export function currentSong(state = {name: "", img: ""}, action) {
+    switch (action.type) {
+      case "GET_NOW_PLAYING":
+           action.nowPlaying = {
+            name: action.nowPlaying.item.name,
+            img: action.nowPlaying.item.album.images[0].url
+          }
+        return action.nowPlaying;
+      default:
+        return state;
     }
 }
 

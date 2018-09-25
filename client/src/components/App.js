@@ -5,7 +5,12 @@ import SpotifyWebApi from "spotify-web-api-js";
 import recordPic from "../images/recordPlayer.png";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
-import { itemsFetchDataSuccess, setUser, userIsLoggedIn } from "../actions/items";
+import {
+  itemsFetchDataSuccess,
+  setUser,
+  userIsLoggedIn,
+  getUserCurrentSong
+} from "../actions/items";
 
 
 
@@ -28,20 +33,7 @@ class App extends Component {
     //   userLists: { name: "stuff" },
     //   savedTracks: [],
     //   playlists: []
-    // };
-//   getHashParams() {
-//   var hashParams = {};
-//   var e,
-//     r = /([^&;=]+)=?([^&;]*)/g,
-//     q = window.location.hash.substring(1);
-//   e = r.exec(q);
-//   while (e) {
-//     hashParams[e[1]] = decodeURIComponent(e[2]);
-//     e = r.exec(q);
-//   }
-//   return hashParams;
-// }
- 
+    // }; 
   componentDidMount() {
     var hashParams = {};
     var e,
@@ -52,8 +44,6 @@ class App extends Component {
       hashParams[e[1]] = decodeURIComponent(e[2]);
       e = r.exec(q);
     }
-    // return hashParams;
-    // const params = this.getHashParams();
     const token = hashParams.access_token;
     if (token) {
       spotifyApi.setAccessToken(token);
@@ -62,24 +52,18 @@ class App extends Component {
       this.props.setUser(response)
       let userLoggedIn = token ? true : false;
       this.props.loggedIn(userLoggedIn);
-      // this.setState({
-      //   user: {
-      //     name: response.display_name,
-      //     userImage: response.images[0].url
-      //   }
-      // });
     }); 
-    
   }
 
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
-      this.setState({
-        nowPlaying: {
-          name: response.item.name,
-          albumArt: response.item.album.images[0].url
-        }
-      });
+      this.props.getSong(response)
+      // this.setState({
+      //   nowPlaying: {
+      //     name: response.item.name,
+      //     albumArt: response.item.album.images[0].url
+      //   }
+      // });
     });
   }
 
@@ -98,31 +82,26 @@ class App extends Component {
 
 
   render() {
-    
       console.log(this.props)
     return <div className="App">
-    
-    
       <NavBar user={this.props.user} login={this.props.isLoggedIn}/>
-        {/* <NavBar loggedIn={this.props.loggedIn} loginName={this.props.user.name} loginPic={this.state.user.userImage} /> */}
         <p>
           {this.props.user.display_name}
           <br /> 
           {this.props.user.email}
         </p>
-        {/* <div>
-
-          <img src={recordPic} style={{ height: 150 }} />
-          <h1>{this.state.nowPlaying.name}</h1>
-          <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }} />
+        <div>
+          <img src={recordPic} alt="recrd" style={{ height: 150 }} />
+          {/* <h1>{this.props.nowPlaying.name}</h1>
+          <img src={this.props.nowPlaying.albumArt} style={{ height: 150 }} /> */}
         </div>
-        {this.state.loggedIn && <button
+        {this.props.loggedIn && <button
             onClick={() => this.getNowPlaying()}
           >
             Check Now Playing
           </button>}
         <br />
-        <button onClick={() => this.getPlaylists()}>
+        {/* <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
         <button onClick={() => this.getRecentTracks()}>
@@ -168,8 +147,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
        setUser: (response) => dispatch(setUser(response)),
-       loggedIn: (bool) => dispatch(userIsLoggedIn(bool))
-    // fetchData: (response) => dispatch(itemsFetchDataSuccess(response)),
+       loggedIn: (bool) => dispatch(userIsLoggedIn(bool)),
+       getSong: (response) => dispatch(getUserCurrentSong(response)),
     // removeItem: (index) => dispatch(deleteItem(index))
   };
 };
