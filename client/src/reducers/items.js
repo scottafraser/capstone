@@ -30,7 +30,6 @@ export function loggedIn(state = false, action) {
 export function items(state = [], action) {
     switch (action.type) {
         case 'ITEMS_FETCH_DATA_SUCCESS':
-            console.log(action.items);
 
             return action.items
 
@@ -45,10 +44,12 @@ export function items(state = [], action) {
     }
 }
 
-export function user(state = { name: "", userImage: "" }, action) {
+export function user(state = {}, action) { 
     switch (action.type) {
         case 'SET_USER':
-        let currentUser = Object.assign({}, state[action.name])
+         return action.user
+        default:
+            return state;
             
 
     }

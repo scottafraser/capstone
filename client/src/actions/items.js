@@ -26,31 +26,37 @@ export function itemsFetchDataSuccess(items) {
     };
 }
 
-export function itemsFetchData(url) {
-    return (dispatch) => {
-        dispatch(itemsIsLoading(true));
-        fetch(url)
-        .then((response) => {
-            if(!response.ok) {
-            throw Error(response.statusText);
-        }
-        dispatch(itemsIsLoading(false)); 
-            console.log(response);
-        return response;
-            
-    })
-    .then((response) => response.json())
-    .then((items) => dispatch(itemsFetchDataSuccess(items)))
-    .catch(() => dispatch(itemsHasErrored(true)));
-
-    }    
-}
-
-
-
-export function deleteItem(index) {
-    return{
-        type: 'DELETE_ITEM',
-        index
+export function setUser(user) {
+    console.log(user);
+    return {
+    type: 'SET_USER',
+    user
     }
 }
+
+// export function itemsFetchData(url) {
+//     return (dispatch) => {
+//         dispatch(itemsIsLoading(true));
+//         fetch(url)
+//         .then((response) => {
+//             if(!response.ok) {
+//             throw Error(response.statusText);
+//         }
+//         dispatch(itemsIsLoading(false)); 
+//             console.log(response);
+//         return response;
+            
+//     })
+//     .then((response) => response.json())
+//     .then((items) => dispatch(itemsFetchDataSuccess(items)))
+//     .catch(() => dispatch(itemsHasErrored(true)));
+
+//     }    
+// }
+
+// export function deleteItem(index) {
+//     return{
+//         type: 'DELETE_ITEM',
+//         index
+//     }
+// }
