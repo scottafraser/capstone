@@ -89,7 +89,7 @@ class App extends Component {
         <div className="playlists">
         {this.props.userPlaylists.map((playlist, index) => 
         <div key={index}>
-            {playlist.name}
+            <h3>{playlist.name}</h3>
             <br />
             <img src={playlist.images[0].url} />
           </div>)}
