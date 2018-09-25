@@ -64,5 +64,15 @@ export function nowPlaying(state = {name: "Click To See", img: ""}, action) {
     }
 }
 
+export function userPlaylists(state = [], action) {
+    console.log(action.userPlaylists);
+    switch (action.type) {   
+        case "GET_PLAYLISTS":
+            return action.userPlaylists.items
+        default:
+            return state;
+    }
+}
+
 //To re-iterate, every reducer will return a discrete property of the state, 
 // regardless of how many conditions are inside that reducer.

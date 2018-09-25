@@ -7,10 +7,11 @@ import NavBar from "./NavBar";
 import PropTypes from "prop-types";
 import {
   itemsFetchDataSuccess,
+  userPlaylists,
   setUser,
   userIsLoggedIn,
-  getUserCurrentSong
-} from "../actions/items";
+  getUserCurrentSong,
+  getUserPlaylists} from "../actions/items";
 
 
 
@@ -19,21 +20,7 @@ const spotifyApi = new SpotifyWebApi();
 
 
 class App extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   const params = this.getHashParams();
-  //   const token = params.access_token;
-  //   if (token) {
-  //     spotifyApi.setAccessToken(token);
-  //   }
-    // this.state = {
-    //   loggedIn: token ? true : false,
-    //   user: { name: "", userImage: "" },
-    //   nowPlaying: { name: "", albumArt: "" },
-    //   userLists: { name: "stuff" },
-    //   savedTracks: [],
-    //   playlists: []
-    // }; 
+ 
   componentDidMount() {
     var hashParams = {};
     var e,
@@ -58,31 +45,21 @@ class App extends Component {
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
       this.props.getSong(response)
-      // this.setState({
-      //   nowPlaying: {
-      //     name: response.item.name,
-      //     albumArt: response.item.album.images[0].url
-      //   }
-      // });
     });
   }
 
-  // getRecentTracks() {
-  //   spotifyApi.getMyRecentlyPlayedTracks().then(response => {
-  //     this.setState({ savedTracks: response.items });
-  //   });
-  // }
 
-  // getPlaylists() {
-  //   spotifyApi.getUserPlaylists().then(response => {
-  //     console.log(response)
-  //     this.setState({ playlists: response.items });
-  //   });
-  // }
+
+  getPlaylists() {
+    spotifyApi.getUserPlaylists().then(response => {
+      console.log(response)
+      this.props.getPlaylists(response);
+    });
+  }
 
 
   render() {
-      console.log(this.props.nowPlaying)
+    console.log(this.props.userPlaylists)
     return <div className="App">
       <NavBar user={this.props.user} login={this.props.isLoggedIn}/>
         <p>
@@ -90,39 +67,31 @@ class App extends Component {
           <br /> 
           {this.props.user.email}
         </p>
-        <div>
-          <img src={recordPic} alt="recrd" style={{ height: 150 }} />
-          <h1>{this.props.nowPlaying.name}</h1>
-          <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
-        </div>
-        {this.props.loggedIn && <button
-            onClick={() => this.getNowPlaying()}
-          >
+      <div>
+        <img src={recordPic} alt="recrd" style={{ height: 150 }} />
+      </div>
+      {this.props.isloggedIn && 
+      <div>
+        <button onClick={() => this.getNowPlaying()}>
             Check Now Playing
-          </button>}
-        <br />
-        {/* <button onClick={() => this.getPlaylists()}>
+          </button>
+        <h1>{this.props.nowPlaying.name}</h1>
+        <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
+      </div>}
+      <br />
+        <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
-        <button onClick={() => this.getRecentTracks()}>
+        {/* <button onClick={() => this.getRecentTracks()}>
           Check Users Recent Tracks
-        </button>
+        </button> */}
 
-        {this.state.playlists.map((playlist, index) => <li key={index}>
+        {this.props.userPlaylists.map((playlist, index) => <li key={index}>
             {playlist.name}
             <br />
             <img src={playlist.images[0].url} />
-          </li>)} */}
+          </li>)}
 
-        {/* recent tracks
-        {this.state.savedTracks.map((song, index) => <li key={index}>
-            {song.track.artists[0].name}
-            <br />
-            {song.track.album.name}
-            <br />
-            {console.log(song.track.album.images)}
-            <img src={song.track.album.images[1].url} />
-          </li>)} */}
       </div>;
   }
 }
@@ -139,6 +108,7 @@ const mapStateToProps = (state) => {
     isLoggedIn: state.isLoggedIn,
     user: state.user,
     nowPlaying: state.nowPlaying,
+    userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
     isLoading: state.itemsIsLoading
   }
@@ -149,9 +119,27 @@ const mapDispatchToProps = (dispatch) => {
        setUser: (response) => dispatch(setUser(response)),
        loggedIn: (bool) => dispatch(userIsLoggedIn(bool)),
        getSong: (response) => dispatch(getUserCurrentSong(response)),
+       getPlaylists: (response) => dispatch(getUserPlaylists(response))
     // removeItem: (index) => dispatch(deleteItem(index))
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
+
+
+  // getRecentTracks() {
+  //   spotifyApi.getMyRecentlyPlayedTracks().then(response => {
+  //     this.setState({ savedTracks: response.items });
+  //   });
+  // }
+
+{/* recent tracks
+        {this.state.savedTracks.map((song, index) => <li key={index}>
+            {song.track.artists[0].name}
+            <br />
+            {song.track.album.name}
+            <br />
+            {console.log(song.track.album.images)}
+            <img src={song.track.album.images[1].url} />
+          </li>)} */}
