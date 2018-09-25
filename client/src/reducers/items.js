@@ -11,17 +11,16 @@ export function itemsIsLoading(state = false, action) {
     switch (action.type) {
         case 'ITEM_IS_LOADING':
             return action.isLoading;
-
+  
         default:
             return state;
     }
 }
 
-export function loggedIn(state = false, action) {
+export function isLoggedIn(state = false, action) {
     switch (action.type) {
-        case 'LOG_IN':
-            return action.loggedIn;
-
+        case 'LOGGED_IN':
+            return action.isLoggedIn;
             default:
             return state
     }
