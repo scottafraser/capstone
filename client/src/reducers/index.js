@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import { items, itemsHasErrored, itemsIsLoading, user, isLoggedIn, currentSong} from './items';
+import { items, itemsHasErrored, itemsIsLoading, user, isLoggedIn, nowPlaying} from './items';
 
 export default combineReducers({
     user,
     isLoggedIn,
-    currentSong,
+    nowPlaying,
     items,
     itemsHasErrored,
     itemsIsLoading

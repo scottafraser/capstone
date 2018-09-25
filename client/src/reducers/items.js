@@ -52,14 +52,13 @@ export function user(state = {}, action) {
     }
 }
 
-export function currentSong(state = {name: "", img: ""}, action) {
+export function nowPlaying(state = {name: "Click To See", img: ""}, action) {
     switch (action.type) {
       case "GET_NOW_PLAYING":
-           action.nowPlaying = {
+            return  {
             name: action.nowPlaying.item.name,
-            img: action.nowPlaying.item.album.images[0].url
-          }
-        return action.nowPlaying;
+            img: action.nowPlaying.item.album.images[0].url        
+          }   
       default:
         return state;
     }

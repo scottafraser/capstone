@@ -82,7 +82,7 @@ class App extends Component {
 
 
   render() {
-      console.log(this.props)
+      console.log(this.props.nowPlaying)
     return <div className="App">
       <NavBar user={this.props.user} login={this.props.isLoggedIn}/>
         <p>
@@ -92,8 +92,8 @@ class App extends Component {
         </p>
         <div>
           <img src={recordPic} alt="recrd" style={{ height: 150 }} />
-          {/* <h1>{this.props.nowPlaying.name}</h1>
-          <img src={this.props.nowPlaying.albumArt} style={{ height: 150 }} /> */}
+          <h1>{this.props.nowPlaying.name}</h1>
+          <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
         </div>
         {this.props.loggedIn && <button
             onClick={() => this.getNowPlaying()}
