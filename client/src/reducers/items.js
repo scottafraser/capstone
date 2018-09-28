@@ -71,5 +71,14 @@ export function userPlaylists(state = [], action) {
   }
 }
 
+export function getGenre(state = "", action) {
+  switch (action.type) {
+    case "GET_GENRE":
+      return action.user;
+    default:
+      return state;
+  }
+}
+
 //To re-iterate, every reducer will return a discrete property of the state,
 // regardless of how many conditions are inside that reducer.

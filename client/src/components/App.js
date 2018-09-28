@@ -13,10 +13,10 @@ import PlaylistSelect from "./PlaylistSelect";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { genre: "" };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { genre: "" };
+  // }
 
   componentDidMount() {
     var hashParams = {};
@@ -73,7 +73,7 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
-    console.log(this.props);
+    console.log(this.state);
     return (
       <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn} />
@@ -105,7 +105,7 @@ class App extends Component {
               name="genre"
               placeholder="Genre"
               onChange={this.updateInput}
-              value={this.state.genre}
+              // value={this.state.genre}
             />
             <button type="submit">create Playlist</button>
           </form>
