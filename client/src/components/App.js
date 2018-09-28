@@ -57,7 +57,9 @@ class App extends Component {
     });
   }
 
-  createPlaylist(genre) {
+  createPlaylist(e) {
+    e.preventDefault();
+    let genre = this.state.genre;
     spotifyApi.getRecommendations({ seed_genres: genre }).then(response => {
       console.log("create response " + response);
       this.props.createPlaylist(response);
@@ -96,7 +98,7 @@ class App extends Component {
           Check User Playlists
         </button>
 
-        <form onSubmit={() => this.createPlaylist(this.state.genre)}>
+        <form onSubmit={e => this.createPlaylist(e)}>
           <input
             type="text"
             name="genre"
@@ -104,7 +106,7 @@ class App extends Component {
             onChange={this.updateInput}
             value={this.state.genre}
           />
-          <button type="submit">createPlaylist</button>
+          <button type="submit">create Playlist</button>
         </form>
 
         <div className="playlists">
