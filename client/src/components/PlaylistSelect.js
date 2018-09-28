@@ -49,7 +49,7 @@ class PlaylistSelect extends React.Component {
           id="outlined-genre"
           label="Genre"
           className={classes.textField}
-          value={this.value}
+          value={this.props.genre}
           onChange={this.handleChange}
           margin="normal"
           variant="outlined"

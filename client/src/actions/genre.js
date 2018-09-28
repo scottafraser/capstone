@@ -5,3 +5,11 @@ export function setGenreState(string) {
     setGenre: string
   };
 }
+
+export function getGenreState(string) {
+  console.log(string);
+  return {
+    type: "GET_GENRE",
+    setGenre: string
+  };
+}

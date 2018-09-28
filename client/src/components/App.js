@@ -13,10 +13,10 @@ import PlaylistSelect from "./PlaylistSelect";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { genre: "" };
-  // }
+  constructor(props) {
+    super(props);
+    this.state = { genre: "" };
+  }
 
   componentDidMount() {
     var hashParams = {};
@@ -39,11 +39,11 @@ class App extends Component {
     });
   }
 
-  // updateInput = e => {
-  //   this.setState({
-  //     genre: e.target.value
-  //   });
-  // };
+  updateInput = e => {
+    this.setState({
+      genre: e.target.value
+    });
+  };
 
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
@@ -73,7 +73,7 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
-    console.log(this.state);
+    console.log("app" + this.props.genre);
     return (
       <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn} />
@@ -85,7 +85,7 @@ class App extends Component {
             style={{ height: 150 }}
           />
         </div>
-        <PlaylistSelect />
+        <PlaylistSelect genre={this.props} />
         {/* {this.props.isLoggedIn && (
           <NowPlaying
             isLoggedIn={this.props.isLoggedIn}
@@ -105,7 +105,7 @@ class App extends Component {
               name="genre"
               placeholder="Genre"
               onChange={this.updateInput}
-              // value={this.state.genre}
+              value={this.state.genre}
             />
             <button type="submit">create Playlist</button>
           </form>
