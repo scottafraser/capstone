@@ -8,7 +8,8 @@ import {
   nowPlaying,
   userPlaylists
 } from "./items";
-import { setGenre } from "./createPlaylist";
+
+import { createPlaylistTracks } from "./createPlaylist";
 
 export default combineReducers({
   user,
@@ -18,5 +19,5 @@ export default combineReducers({
   items,
   itemsHasErrored,
   itemsIsLoading,
-  setGenre
+  createPlaylistTracks
 });
