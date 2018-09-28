@@ -27,11 +27,12 @@ const styles = theme => ({
 class PlaylistSelect extends React.Component {
   handleChange = event => {
     console.log("event-target-value" + event.target.value);
-    this.props.genre(event.target.value);
+    this.props.setGenre(event.target.value);
   };
 
-  setGenreClick = () => {
-    this.props.genre(this.props);
+  setGenreClick = e => {
+    e.preventDefault();
+    console.log(this.props);
   };
 
   render() {
@@ -39,7 +40,7 @@ class PlaylistSelect extends React.Component {
     console.log(this.props);
     return (
       <form
-        onSubmit={this.setGenreClick}
+        onSubmit={e => this.setGenreClick(e)}
         className={classes.container}
         noValidate
         autoComplete="off"
@@ -50,7 +51,6 @@ class PlaylistSelect extends React.Component {
           className={classes.textField}
           value={this.value}
           onChange={this.handleChange}
-          onClick={this.setGenreClick}
           margin="normal"
           variant="outlined"
         />
@@ -68,13 +68,13 @@ PlaylistSelect.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    genre: state
+    genre: state.genre
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    genre: genre => dispatch(actions.setGenreState(genre))
+    setGenre: genre => dispatch(actions.setGenreState(genre))
   };
 };
 
