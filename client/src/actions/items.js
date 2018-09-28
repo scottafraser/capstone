@@ -1,29 +1,29 @@
 export function itemsHasErrored(bool) {
-    return {
-        type: 'ITEMS_HAS_ERRORED',
-        hasErrored: bool
-    };
+  return {
+    type: "ITEMS_HAS_ERRORED",
+    hasErrored: bool
+  };
 }
 
 export function itemsIsLoading(bool) {
-    return {
-        type: 'ITEMS_IS_LOADING',    
-        isLoading: bool
-    }
+  return {
+    type: "ITEMS_IS_LOADING",
+    isLoading: bool
+  };
 }
 
 export function itemsFetchDataSuccess(items) {
-    return {
-        type: 'ITEMS_FETCH_DATA_SUCCESS',
-        items
-    };
+  return {
+    type: "ITEMS_FETCH_DATA_SUCCESS",
+    items
+  };
 }
 
 export function setUser(user) {
-    return {
-    type: 'SET_USER',
+  return {
+    type: "SET_USER",
     user
-    }
+  };
 }
 
 export function userIsLoggedIn(bool) {
@@ -34,17 +34,24 @@ export function userIsLoggedIn(bool) {
 }
 
 export function getUserCurrentSong(response) {
-    return {
-        type: 'GET_NOW_PLAYING',
-        nowPlaying: response
-    }
+  return {
+    type: "GET_NOW_PLAYING",
+    nowPlaying: response
+  };
 }
 
 export function getUserPlaylists(response) {
-    return {
-        type: 'GET_PLAYLISTS',
-        userPlaylists: response
-    }
+  return {
+    type: "GET_PLAYLISTS",
+    userPlaylists: response
+  };
+}
+
+export function userSetGenre(string) {
+  return {
+    type: "SET_GENRE",
+    setGenre: string
+  };
 }
 
 // export function itemsFetchData(response) {
@@ -55,14 +62,14 @@ export function getUserPlaylists(response) {
 //             if(!response.ok) {
 //             throw Error(response.statusText);
 //         }
-//         dispatch(itemsIsLoading(false)); 
-//         return response;        
+//         dispatch(itemsIsLoading(false));
+//         return response;
 //     })
 //     .then((response) => response.json())
 //     .then((items) => dispatch(itemsFetchDataSuccess(items)))
 //     .catch(() => dispatch(itemsHasErrored(true)));
 
-//     }    
+//     }
 // }
 
 // export function deleteItem(index) {
