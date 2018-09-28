@@ -47,10 +47,10 @@ export function getUserPlaylists(response) {
   };
 }
 
-export function userSetGenre(string) {
+export function userCreatePlaylist(response) {
   return {
-    type: "SET_GENRE",
-    setGenre: string
+    type: "CREATE_PLAYLIST",
+    createPlaylistTracks: response
   };
 }
 

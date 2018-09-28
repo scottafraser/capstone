@@ -1,8 +1,8 @@
-export function setGenre(state = "", action) {
-  console.log(action.setGenre);
+export function createPlaylistTracks(state = [], action) {
   switch (action.type) {
-    case "SET_GENRE":
-      return action.setGenre;
+    case "CREATE_PLAYLIST":
+      console.log("reducer " + action.createPlaylistTracks.tracks);
+      return action.createPlaylistTracks.tracks;
     default:
       return state;
   }

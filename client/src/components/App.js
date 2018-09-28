@@ -12,6 +12,11 @@ import * as actions from "../actions/items";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { genre: "" };
+  }
+
   componentDidMount() {
     var hashParams = {};
     var e,
@@ -33,6 +38,13 @@ class App extends Component {
     });
   }
 
+  updateInput = e => {
+    this.setState({
+      genre: e.target.value
+    });
+    console.log(this.state);
+  };
+
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
       this.props.getSong(response);
@@ -45,10 +57,11 @@ class App extends Component {
     });
   }
 
-  createPlaylist() {
-    spotifyApi
-      .getRecommendations({ seed_genres: "country" })
-      .then(response => console.log(response));
+  createPlaylist(genre) {
+    spotifyApi.getRecommendations({ seed_genres: genre }).then(response => {
+      console.log("create response " + response);
+      this.props.createPlaylist(response);
+    });
   }
 
   render() {
@@ -58,7 +71,7 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
-    console.log(this.props);
+    console.log(this.props.createPlaylistTracks, this.props.userPlaylists);
     return (
       <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn} />
@@ -77,38 +90,41 @@ class App extends Component {
             nowPlaying={this.props.nowPlaying}
           />
         )} */}
-        {/* {this.props.isLoggedIn && (
-          <div>
-            <button onClick={() => this.getNowPlaying()}>
-              Check Now Playing
-            </button>
-            <h1>{this.props.nowPlaying.name}</h1>
-            <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
-          </div>
-        )} */}
         <br />
 
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
 
-        <form onSubmit={() => this.createPlaylist()}>
+        <form onSubmit={() => this.createPlaylist(this.state.genre)}>
           <input
             type="text"
             name="genre"
             placeholder="Genre"
             onChange={this.updateInput}
-            value={this.userSetGenre}
+            value={this.state.genre}
           />
           <button type="submit">createPlaylist</button>
         </form>
 
         <div className="playlists">
+          {this.props.createPlaylistTracks.map((track, index) => (
+            <div key={index}>
+              <h3>{track.name}</h3>
+              <h3>{track.artists[0].name}</h3>
+              <br />
+              <img src={track.album.images[1].url} alt="album art" />
+            </div>
+          ))}
+        </div>
+
+        <div className="playlists">
+          <h1>USER PLAYLISTS</h1>
           {this.props.userPlaylists.map((playlist, index) => (
             <div key={index}>
               <h3>{playlist.name}</h3>
               <br />
-              <img src={playlist.images[0].url} />
+              <img src={playlist.images[0].url} alt="playlist image" />
             </div>
           ))}
         </div>
@@ -128,7 +144,7 @@ const mapStateToProps = state => {
     items: state.items,
     isLoggedIn: state.isLoggedIn,
     user: state.user,
-    searchGenre: state.searchGenre,
+    createPlaylistTracks: state.createPlaylistTracks,
     nowPlaying: state.nowPlaying,
     userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
@@ -139,7 +155,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setUser: response => dispatch(actions.setUser(response)),
-    setGenre: response => dispatch(actions.userSetGenre(response)),
+    createPlaylist: response => dispatch(actions.userCreatePlaylist(response)),
     loggedIn: bool => dispatch(actions.userIsLoggedIn(bool)),
     getSong: response => dispatch(actions.getUserCurrentSong(response)),
     getPlaylists: response => dispatch(actions.getUserPlaylists(response))
@@ -168,4 +184,16 @@ export default connect(
             {console.log(song.track.album.images)}
             <img src={song.track.album.images[1].url} />
           </li>)} */
+}
+
+{
+  /* {this.props.isLoggedIn && (
+          <div>
+            <button onClick={() => this.getNowPlaying()}>
+              Check Now Playing
+            </button>
+            <h1>{this.props.nowPlaying.name}</h1>
+            <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
+          </div>
+        )} */
 }
