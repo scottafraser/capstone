@@ -7,6 +7,7 @@ import NavBar from "./NavBar";
 import PropTypes from "prop-types";
 import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
+import PlaylistSelect from "./PlaylistSelect";
 
 //spotify library
 const spotifyApi = new SpotifyWebApi();
@@ -38,12 +39,11 @@ class App extends Component {
     });
   }
 
-  updateInput = e => {
-    this.setState({
-      genre: e.target.value
-    });
-    console.log(this.state);
-  };
+  // updateInput = e => {
+  //   this.setState({
+  //     genre: e.target.value
+  //   });
+  // };
 
   getNowPlaying() {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
@@ -73,7 +73,7 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
-    console.log(this.props.createPlaylistTracks, this.props.userPlaylists);
+    console.log(this.props);
     return (
       <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn} />
@@ -85,6 +85,7 @@ class App extends Component {
             style={{ height: 150 }}
           />
         </div>
+        <PlaylistSelect />
         {/* {this.props.isLoggedIn && (
           <NowPlaying
             isLoggedIn={this.props.isLoggedIn}
@@ -97,17 +98,18 @@ class App extends Component {
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
-
-        <form onSubmit={e => this.createPlaylist(e)}>
-          <input
-            type="text"
-            name="genre"
-            placeholder="Genre"
-            onChange={this.updateInput}
-            value={this.state.genre}
-          />
-          <button type="submit">create Playlist</button>
-        </form>
+        <div>
+          <form onSubmit={e => this.createPlaylist(e)}>
+            <input
+              type="text"
+              name="genre"
+              placeholder="Genre"
+              onChange={this.updateInput}
+              value={this.state.genre}
+            />
+            <button type="submit">create Playlist</button>
+          </form>
+        </div>
 
         <div className="playlists">
           {this.props.createPlaylistTracks.map((track, index) => (
@@ -143,6 +145,7 @@ App.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    genre: state.genre,
     items: state.items,
     isLoggedIn: state.isLoggedIn,
     user: state.user,
