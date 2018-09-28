@@ -1,4 +1,6 @@
 import { combineReducers } from "redux";
+import { genre } from "./genreReducer";
+import { createPlaylistTracks } from "./createPlaylist";
 import {
   items,
   itemsHasErrored,
@@ -9,8 +11,6 @@ import {
   userPlaylists
 } from "./items";
 
-import { createPlaylistTracks } from "./createPlaylist";
-
 export default combineReducers({
   user,
   isLoggedIn,
@@ -19,5 +19,6 @@ export default combineReducers({
   items,
   itemsHasErrored,
   itemsIsLoading,
-  createPlaylistTracks
+  createPlaylistTracks,
+  genre
 });
