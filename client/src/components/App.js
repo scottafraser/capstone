@@ -13,10 +13,10 @@ import PlaylistSelect from "./PlaylistSelect";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { genre: "" };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { genre: "" };
+  // }
 
   componentDidMount() {
     var hashParams = {};
@@ -57,14 +57,16 @@ class App extends Component {
     });
   }
 
-  createPlaylist(e) {
+  createPlaylist = e => {
     e.preventDefault();
-    let genre = this.state.genre;
+    console.log(this.props);
+    let genre = this.props.genre;
+    console.log("create function genre" + genre);
     spotifyApi.getRecommendations({ seed_genres: genre }).then(response => {
       console.log("create response " + response);
       this.props.createPlaylist(response);
     });
-  }
+  };
 
   render() {
     if (this.props.hasErrored) {
@@ -73,7 +75,7 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
-    console.log("app" + this.props.genre);
+
     return (
       <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn} />
@@ -85,7 +87,7 @@ class App extends Component {
             style={{ height: 150 }}
           />
         </div>
-        <PlaylistSelect genre={this.props} />
+        <PlaylistSelect createList={this.createPlaylist} />
         {/* {this.props.isLoggedIn && (
           <NowPlaying
             isLoggedIn={this.props.isLoggedIn}
@@ -98,7 +100,7 @@ class App extends Component {
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
-        <div>
+        {/* <div>
           <form onSubmit={e => this.createPlaylist(e)}>
             <input
               type="text"
@@ -109,7 +111,7 @@ class App extends Component {
             />
             <button type="submit">create Playlist</button>
           </form>
-        </div>
+        </div> */}
 
         <div className="playlists">
           {this.props.createPlaylistTracks.map((track, index) => (
@@ -140,7 +142,8 @@ class App extends Component {
 App.propTypes = {
   thisUser: PropTypes.object,
   setUser: PropTypes.func,
-  isLoggedIn: PropTypes.bool
+  isLoggedIn: PropTypes.bool,
+  createPlaylist: PropTypes.func
 };
 
 const mapStateToProps = state => {

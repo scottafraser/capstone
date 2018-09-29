@@ -10,6 +10,7 @@ import compose from "recompose/compose";
 const styles = theme => ({
   container: {
     display: "flex",
+    justifyContent: "center",
     flexWrap: "wrap"
   },
   textField: {
@@ -25,45 +26,54 @@ const styles = theme => ({
 });
 
 class PlaylistSelect extends React.Component {
-  handleChange = event => {
-    console.log("event-target-value" + event.target.value);
-    this.props.setGenre(event.target.value);
+  constructor(props) {
+    super(props);
+    this.state = { genre: "" };
+  }
+
+  handleChange = e => {
+    this.setState({
+      genre: e.target.value
+    });
   };
 
   setGenreClick = e => {
     e.preventDefault();
-    console.log(this.props);
+    console.log(this.state.genre);
+    this.props.setGenre(this.state.genre);
   };
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
+    console.log("playlist maker props" + this.props.createList);
     return (
-      <form
-        onSubmit={e => this.setGenreClick(e)}
-        className={classes.container}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="outlined-genre"
-          label="Genre"
-          className={classes.textField}
-          value={this.props.genre}
-          onChange={this.handleChange}
-          margin="normal"
-          variant="outlined"
-        />
-        <button type="submit" onClick={console.log(this.state)}>
-          button
-        </button>
-      </form>
+      <div>
+        <form
+          onSubmit={e => this.setGenreClick(e)}
+          className={classes.container}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="outlined-genre"
+            label="Genre"
+            className={classes.textField}
+            value={this.props.genre}
+            onChange={this.handleChange}
+            margin="normal"
+            variant="outlined"
+          />
+          <button type="submit">button</button>
+        </form>
+        <button onClick={this.props.createList}>Make Playlist</button>
+      </div>
     );
   }
 }
 
 PlaylistSelect.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  genre: PropTypes.string
 };
 
 const mapStateToProps = state => {
