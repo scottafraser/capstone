@@ -57,7 +57,7 @@ export function userCreatePlaylist(response) {
 export function GetGenre(string) {
   return {
     type: "GET_GENRE",
-    getGenre: string
+    setGenre: string
   };
 }
 
