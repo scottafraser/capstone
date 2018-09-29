@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
+// import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import * as actions from "../actions/genre";
@@ -28,32 +28,24 @@ const styles = theme => ({
 class PlaylistSelect extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { genre: "" };
+    this.state = { localGenre: "" };
   }
 
   handleChange = e => {
     this.setState({
-      genre: e.target.value
+      localGenre: e.target.value
     });
   };
 
-  setGenreClick = e => {
-    e.preventDefault();
-    console.log(this.state.genre);
-    this.props.setGenre(this.state.genre);
-  };
+  componentDidUpdate() {
+    this.props.setGenre(this.state.localGenre);
+  }
 
   render() {
     const { classes } = this.props;
-    console.log("playlist maker props" + this.props.createList);
     return (
       <div>
-        <form
-          onSubmit={e => this.setGenreClick(e)}
-          className={classes.container}
-          noValidate
-          autoComplete="off"
-        >
+        <form className="{classes.container}" noValidate autoComplete="off">
           <TextField
             id="outlined-genre"
             label="Genre"
@@ -63,7 +55,6 @@ class PlaylistSelect extends React.Component {
             margin="normal"
             variant="outlined"
           />
-          <button type="submit">button</button>
         </form>
         <button onClick={this.props.createList}>Make Playlist</button>
       </div>
