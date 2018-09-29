@@ -36,25 +36,24 @@ const styles = {
 
 function ButtonAppBar(props) {
   const { classes } = props;
-  let loggy = 
-  <Button href="http://localhost:8888" color="inherit">
-    Login to Spotify
-  </Button>
-  
+  let loggy = (
+    <Button href="http://localhost:8888" color="inherit">
+      Login to Spotify
+    </Button>
+  );
+
   if (props.login === true) {
-    console.log(props.login + ' navbar');
-    
-    loggy = <div className={classes.row}>
+    loggy = (
+      <div className={classes.row}>
         <h3>{props.user.display_name}</h3>
         <Avatar
-        alt={props.user.display_name}
-        src={props.user.images[0].url}
-        className={classNames(classes.avatar, classes.bigAvatar)}
-      />
-      </div>;
+          alt={props.user.display_name}
+          src={props.user.images[0].url}
+          className={classNames(classes.avatar, classes.bigAvatar)}
+        />
+      </div>
+    );
   }
-      
-  
 
   return (
     <div className={classes.root}>

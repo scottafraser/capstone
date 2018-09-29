@@ -8,7 +8,7 @@ import configureStore from "./store/configureStore";
 // import ErrorBoundry from "./components/ErrorBoundry";
 
 const store = configureStore();
-console.log(store);
+console.log(store.getState());
 
 ReactDOM.render(
   <Provider store={store}>

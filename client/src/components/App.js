@@ -5,7 +5,7 @@ import SpotifyWebApi from "spotify-web-api-js";
 import record from "../images/record.jpeg";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
-import NowPlaying from "./NowPlaying";
+// import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
 import PlaylistSelect from "./PlaylistSelect";
 
@@ -13,11 +13,6 @@ import PlaylistSelect from "./PlaylistSelect";
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { genre: "" };
-  // }
-
   componentDidMount() {
     var hashParams = {};
     var e,
@@ -63,7 +58,6 @@ class App extends Component {
     let genre = this.props.genre;
     console.log("create function genre" + genre);
     spotifyApi.getRecommendations({ seed_genres: genre }).then(response => {
-      console.log("create response " + response);
       this.props.createPlaylist(response);
     });
   };
@@ -100,18 +94,6 @@ class App extends Component {
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
-        {/* <div>
-          <form onSubmit={e => this.createPlaylist(e)}>
-            <input
-              type="text"
-              name="genre"
-              placeholder="Genre"
-              onChange={this.updateInput}
-              value={this.state.genre}
-            />
-            <button type="submit">create Playlist</button>
-          </form>
-        </div> */}
 
         <div className="playlists">
           {this.props.createPlaylistTracks.map((track, index) => (
@@ -130,7 +112,7 @@ class App extends Component {
             <div key={index}>
               <h3>{playlist.name}</h3>
               <br />
-              <img src={playlist.images[0].url} alt="playlist image" />
+              <img src={playlist.images[0].url} alt="playlist cover art" />
             </div>
           ))}
         </div>
@@ -148,12 +130,12 @@ App.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    genre: state.genre,
-    items: state.items,
+    genre: state.setGenre,
+    // items: state.items,
     isLoggedIn: state.isLoggedIn,
     user: state.user,
     createPlaylistTracks: state.createPlaylistTracks,
-    nowPlaying: state.nowPlaying,
+    // nowPlaying: state.nowPlaying,
     userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
     isLoading: state.itemsIsLoading
@@ -182,8 +164,7 @@ export default connect(
 //   });
 // }
 
-{
-  /* recent tracks
+/* recent tracks
         {this.state.savedTracks.map((song, index) => <li key={index}>
             {song.track.artists[0].name}
             <br />
@@ -192,10 +173,8 @@ export default connect(
             {console.log(song.track.album.images)}
             <img src={song.track.album.images[1].url} />
           </li>)} */
-}
 
-{
-  /* {this.props.isLoggedIn && (
+/* {this.props.isLoggedIn && (
           <div>
             <button onClick={() => this.getNowPlaying()}>
               Check Now Playing
@@ -204,4 +183,3 @@ export default connect(
             <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
           </div>
         )} */
-}
