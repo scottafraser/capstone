@@ -49,7 +49,6 @@ class PlaylistSelect extends React.Component {
   };
 
   handleArtistChange = e => {
-    console.log(this.state.localArtist)
     this.setState({
       localArtist: e.target.value,
     });
@@ -68,10 +67,6 @@ class PlaylistSelect extends React.Component {
       showArtist: false
     })
   }
-
-  // componentDidMount() {
-  //   this.props.setArtist(this.state.localArtist);
-  // }
 
   componentDidUpdate() {
     this.props.setGenre(this.state.localGenre)
