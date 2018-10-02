@@ -7,3 +7,13 @@ export function setGenre(state = {}, action) {
       return state;
   }
 }
+
+export function setArtist(state = {}, action) {
+  switch (action.type) {
+    case "SET_ARTIST":
+      console.log(action.setArtist);
+      return action.setArtist;
+    default:
+      return state;
+  }
+}

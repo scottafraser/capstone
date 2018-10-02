@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import * as actions from "../actions/genre";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   container: {
@@ -22,13 +23,23 @@ const styles = theme => ({
   },
   menu: {
     width: 200
-  }
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  input: {
+    display: 'none',
+  },
 });
 
 class PlaylistSelect extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { localGenre: "" };
+    this.state = { 
+      localGenre: "",
+      localArtist: "",
+      showGenre: false,
+      showArtist: false};
   }
 
   handleChange = e => {
@@ -37,14 +48,34 @@ class PlaylistSelect extends React.Component {
     });
   };
 
+  toggleArtist = () => {
+    this.setState({
+      showArtist : !this.state.showArtist
+    })
+  }
+
+  toggleGenre = () => {
+    this.setState({
+      showGenre : !this.state.showGenre
+    })
+  }
+
   componentDidUpdate() {
     this.props.setGenre(this.state.localGenre);
+    this.props.setArtist(this.state.localArtist)
   }
 
   render() {
     const { classes } = this.props;
     return (
       <div>
+        <Button onClick={this.toggleArtist} variant="contained" color="primary" className={classes.button}>
+          Artist
+        </Button>
+        <Button onClick={this.toggleGenre} variant="contained" color="primary" className={classes.button}>
+          Genre
+        </Button>
+        {this.state.showGenre && 
         <form className="{classes.container}" noValidate autoComplete="off">
           <TextField
             id="outlined-genre"
@@ -55,8 +86,23 @@ class PlaylistSelect extends React.Component {
             margin="normal"
             variant="outlined"
           />
-        </form>
-        <button onClick={this.props.createList}>Make Playlist</button>
+        </form>}
+        {this.state.showArtist && 
+        <form className="{classes.container}" noValidate autoComplete="off">
+          <TextField
+            id="outlined-artist"
+            label="Artist"
+            className={classes.textField}
+            value={this.props.artist}
+            onChange={this.handleChange}
+            margin="normal"
+            variant="outlined"
+          />
+        </form>}
+        <br />
+        <Button onClick={this.props.createList} variant="contained" color="primary" className={classes.button}>
+          Create Playlist
+        </Button>
       </div>
     );
   }
@@ -64,18 +110,21 @@ class PlaylistSelect extends React.Component {
 
 PlaylistSelect.propTypes = {
   classes: PropTypes.object.isRequired,
-  genre: PropTypes.string
+  genre: PropTypes.string,
+  artist: PropTypes.string,
 };
 
 const mapStateToProps = state => {
   return {
-    genre: state.genre
+    genre: state.genre,
+    artist: state.genre
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setGenre: genre => dispatch(actions.setGenreState(genre))
+    setGenre: genre => dispatch(actions.setGenreState(genre)),
+    setArtist: artist => dispatch(actions.setArtistState(artist))
   };
 };
 

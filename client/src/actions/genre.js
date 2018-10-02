@@ -6,10 +6,12 @@ export function setGenreState(string) {
   };
 }
 
-// export function getGenreState(string) {
-//   console.log(string);
-//   return {
-//     type: "GET_GENRE",
-//     getGenre: string
-//   };
-// }
+export function setArtistState(string) {
+  console.log(string);
+  return {
+    type: "SET_Artist",
+    setGenre: string
+  };
+}
+
+
