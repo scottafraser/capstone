@@ -42,31 +42,47 @@ class PlaylistSelect extends React.Component {
       showArtist: false};
   }
 
-  handleChange = e => {
+  handleGenreChange = e => {
     this.setState({
-      localGenre: e.target.value
+      localGenre: e.target.value,
+    });
+  };
+
+  handleArtistChange = e => {
+    console.log(this.state.localArtist)
+    this.setState({
+      localArtist: e.target.value,
     });
   };
 
   toggleArtist = () => {
     this.setState({
-      showArtist : !this.state.showArtist
+      showArtist : !this.state.showArtist,
+      showGenre: false
     })
   }
 
   toggleGenre = () => {
     this.setState({
-      showGenre : !this.state.showGenre
+      showGenre : !this.state.showGenre,
+      showArtist: false
     })
   }
 
+  // componentDidMount() {
+  //   this.props.setArtist(this.state.localArtist);
+  // }
+
   componentDidUpdate() {
-    this.props.setGenre(this.state.localGenre);
+    this.props.setGenre(this.state.localGenre)
     this.props.setArtist(this.state.localArtist)
   }
 
+
   render() {
     const { classes } = this.props;
+    console.log(this.props);
+    
     return (
       <div>
         <Button onClick={this.toggleArtist} variant="contained" color="primary" className={classes.button}>
@@ -76,33 +92,39 @@ class PlaylistSelect extends React.Component {
           Genre
         </Button>
         {this.state.showGenre && 
-        <form className="{classes.container}" noValidate autoComplete="off">
-          <TextField
-            id="outlined-genre"
-            label="Genre"
-            className={classes.textField}
-            value={this.props.genre}
-            onChange={this.handleChange}
-            margin="normal"
-            variant="outlined"
-          />
-        </form>}
+        <div>
+          <form className="{classes.container}" noValidate autoComplete="off">
+            <TextField
+              id="outlined-genre"
+              label="Genre"
+              className={classes.textField}
+              value={this.props.genre}
+              onChange={this.handleGenreChange}
+              margin="normal"
+              variant="outlined"
+            />
+          </form>
+          <Button onClick={this.props.createGenreList} variant="contained" color="primary" className={classes.button}>
+            Create Playlist
+          </Button>
+        </div> }
         {this.state.showArtist && 
-        <form className="{classes.container}" noValidate autoComplete="off">
-          <TextField
-            id="outlined-artist"
-            label="Artist"
-            className={classes.textField}
-            value={this.props.artist}
-            onChange={this.handleChange}
-            margin="normal"
-            variant="outlined"
-          />
-        </form>}
-        <br />
-        <Button onClick={this.props.createList} variant="contained" color="primary" className={classes.button}>
-          Create Playlist
-        </Button>
+        <div>
+          <form className="{classes.container}" noValidate autoComplete="off">
+            <TextField
+              id="outlined-artist"
+              label="Artist"
+              className={classes.textField}
+              value={this.props.artist}
+              onChange={this.handleArtistChange}
+              margin="normal"
+              variant="outlined"
+            />
+          </form>
+          <Button onClick={this.props.createArtistList} variant="contained" color="primary" className={classes.button}>
+            Create Playlist
+          </Button>
+          </div>}
       </div>
     );
   }
@@ -117,7 +139,7 @@ PlaylistSelect.propTypes = {
 const mapStateToProps = state => {
   return {
     genre: state.genre,
-    artist: state.genre
+    artist: state.artist
   };
 };
 
