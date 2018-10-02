@@ -51,20 +51,18 @@ class PushPlaylist extends Component {
     };
 
   makePlaylist = () => {
-    spotifyApi.createPlaylist({
+    spotifyApi
+      .createPlaylist({
         name: this.state.playlistTitle,
-        description: "Testing pushing array",
+        description: "Made with ♥",
         public: false
       })
       .then(response => {
         let playlistId = response.id;
         this.mapPlaylistTrackIds();
-        spotifyApi.addTracksToPlaylist(
-            playlistId, 
-            this.state.trackIdArray
-      );
-      this.handleClose()
-  })
+        spotifyApi.addTracksToPlaylist(playlistId, this.state.trackIdArray);
+        this.handleClose();
+      });
 }
 
   mapPlaylistTrackIds = () => {

@@ -7,6 +7,7 @@ import * as actions from "../actions/genre";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
 import Button from "@material-ui/core/Button";
+import PushPlaylist from './PushPlaylist'
 
 const styles = theme => ({
   container: {
@@ -40,6 +41,7 @@ class PlaylistSelect extends React.Component {
       localArtist: "",
       showGenre: false,
       showArtist: false,
+      showSave: false,
     };
   }
 
@@ -54,6 +56,17 @@ class PlaylistSelect extends React.Component {
       localArtist: e.target.value,
     });
   };
+
+  toggleSave = () => {
+    this.setState({
+      showSave: !this.state.showSave
+    })
+  }
+
+  onClick = e => {
+    this.toggleSave();
+    this.props.createArtistList(e)
+  }
 
   toggleArtist = () => {
     this.setState({
@@ -77,7 +90,7 @@ class PlaylistSelect extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
+ 
     
     return (
       <div>
@@ -87,7 +100,7 @@ class PlaylistSelect extends React.Component {
         <Button onClick={this.toggleGenre} variant="contained" color="primary" className={classes.button}>
           Genre
         </Button>
-        {this.state.showGenre && 
+        {this.state.showGenre &&         
         <div>
           <form className="{classes.container}" noValidate autoComplete="off">
             <TextField
@@ -117,9 +130,13 @@ class PlaylistSelect extends React.Component {
               variant="outlined"
             />
           </form>
-          <Button onClick={this.props.createArtistList} variant="contained" color="primary" className={classes.button}>
+          <Button onClick={this.onClick} variant="contained" color="primary" className={classes.button}>
             Create Playlist
           </Button>
+            </div>}
+          {this.state.showSave && 
+            <div>
+             <PushPlaylist />
           </div>}
       </div>
     );
