@@ -1,12 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import * as actions from "../actions/genre";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
 import Button from "@material-ui/core/Button";
 import SpotifyWebApi from "spotify-web-api-js";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const styles = theme => ({
     button: {
@@ -24,13 +29,30 @@ class PushPlaylist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      trackIdArray: []
+      playlistTitle: '',  
+      trackIdArray: [],
+      open: false,
+  };
+}
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+    handleChange = e => {
+    this.setState({
+        playlistTitle: e.target.value,
+    });
+    console.log(this.state.playlistTitle);
     };
-  }
 
   makePlaylist = () => {
     spotifyApi.createPlaylist({
-        name: "Test",
+        name: this.state.playlistTitle,
         description: "Testing pushing array",
         public: false
       })
@@ -41,6 +63,7 @@ class PushPlaylist extends Component {
             playlistId, 
             this.state.trackIdArray
       );
+      this.handleClose()
   })
 }
 
@@ -55,30 +78,70 @@ class PushPlaylist extends Component {
     const { classes } = this.props;
     return (
       <div>
-        {this.props.createPlaylistTracks.map(track => (
+          <div>
+        <Button    
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={this.handleClickOpen}>
+          Save Playlist
+          </Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Save Playlist</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+             Create a playlist with these songs, this will save to your spotify account.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Title"
+              type="title"
+              value={this.state.playlistTitle}
+              onChange={this.handleChange}
+              fullWidth
+            />
+            <DialogContentText>
+                Create a playlist with these songs, this will save to your spotify account.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.makePlaylist} color="primary">
+              Save
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+        {/* {this.props.createPlaylistTracks.map(track => (
           <div key={track.id}>
             <h3>{track.name}</h3>
             <h3>{track.id}</h3>
             <br />
           </div>
-        ))}
-
-        <Button
-          onClick={this.makePlaylist}
-          variant="contained"
-          color="primary"
-          className={classes.button}
-        >
-          Save Playlist
-        </Button>
+        ))} */}
       </div>
     );
   }
 }
 
+PushPlaylist.propTypes = {
+    classes: PropTypes.object.isRequired,
+    genre: PropTypes.string,
+    artist: PropTypes.string,
+};
+
 const mapStateToProps = state => {
     return {
     createPlaylistTracks: state.createPlaylistTracks,
+    // artist: state.artist
     };
 };
 

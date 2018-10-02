@@ -39,7 +39,8 @@ class PlaylistSelect extends React.Component {
       localGenre: "",
       localArtist: "",
       showGenre: false,
-      showArtist: false};
+      showArtist: false,
+    };
   }
 
   handleGenreChange = e => {
