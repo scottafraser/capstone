@@ -21,47 +21,59 @@ const spotifyApi = new SpotifyWebApi();
 
 
 class PushPlaylist extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            trackIdArray: [],
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      trackIdArray: []
+    };
+  }
 
+  makePlaylist = () => {
+    spotifyApi.createPlaylist({
+        name: "Test",
+        description: "Testing pushing array",
+        public: false
+      })
+      .then(response => {
+        let playlistId = response.id;
+        this.mapPlaylistTrackIds();
+        spotifyApi.addTracksToPlaylist(
+            playlistId, 
+            this.state.trackIdArray
+      );
+  })
+}
 
-    // makePlaylist() {
-    //     spotifyApi.createPlaylist().then(response => {
-    //         console.log(response)
-    //     });
-    // }
-    
-    makePlaylist = () => {
-        console.log(this.state.trackIdArray);
-        let trackArray = this.props.createPlaylistTracks.map(tracks => tracks.id)
-            this.setState({
-                trackIdArray: trackArray
-            })
-        };
-    
-    
-    render() {
-        const { classes } = this.props;
-        return (
-            <div>
-   
-            {this.props.createPlaylistTracks.map((track) => (
-                <div key={track.id}>
-                <h3>{track.name}</h3>
-                <h3>{track.id}</h3>
-                <br />
-                </div>
-                ))}
+  mapPlaylistTrackIds = () => {
+    let trackArray = this.props.createPlaylistTracks.map(tracks => tracks.uri);
+    this.setState({
+      trackIdArray: trackArray
+    });
+  };
 
-            <Button  onClick={this.makePlaylist} variant="contained" color="primary" className={classes.button}>Save Playlist</Button>
-                
-            </div>
-        );
-    }
+  render() {
+    const { classes } = this.props;
+    return (
+      <div>
+        {this.props.createPlaylistTracks.map(track => (
+          <div key={track.id}>
+            <h3>{track.name}</h3>
+            <h3>{track.id}</h3>
+            <br />
+          </div>
+        ))}
+
+        <Button
+          onClick={this.makePlaylist}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          Save Playlist
+        </Button>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => {
