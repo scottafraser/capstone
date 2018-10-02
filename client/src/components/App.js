@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 // import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
 import PlaylistSelect from "./PlaylistSelect";
-import PushPlaylist from "./PushPlaylist";
+// import PushPlaylist from "./PushPlaylist";
 
 //spotify library
 const spotifyApi = new SpotifyWebApi();
@@ -79,7 +79,7 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
-
+    console.log(this.props.createPlaylistTracks) 
     return (
       <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn} />
@@ -103,11 +103,9 @@ class App extends Component {
           />
         )} */}
         <br />
-
-        <button onClick={() => this.getPlaylists()}>
+        {/* <button onClick={() => this.getPlaylists()}>
           Check User Playlists
-        </button>
-        <PushPlaylist />
+        </button> */}
         <div className="playlists">
           {this.props.createPlaylistTracks.map((track, index) => (
             <div key={index}>
@@ -119,7 +117,7 @@ class App extends Component {
           ))}
         </div>
 
-        <div className="playlists">
+        {/* <div className="playlists">
           <h1>USER PLAYLISTS</h1>
           {this.props.userPlaylists.map((playlist, index) => (
             <div key={index}>
@@ -128,7 +126,7 @@ class App extends Component {
               <img src={playlist.images[0].url} alt="playlist cover art" />
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     );
   }
