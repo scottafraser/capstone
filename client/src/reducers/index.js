@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { setGenre } from "./genreReducer";
+import { setGenre, setArtist } from "./genreReducer";
 import { createPlaylistTracks } from "./createPlaylist";
 import {
   items,
@@ -20,5 +20,6 @@ export default combineReducers({
   itemsHasErrored,
   itemsIsLoading,
   createPlaylistTracks,
-  setGenre
+  setGenre,
+  setArtist
 });

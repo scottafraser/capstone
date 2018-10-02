@@ -52,14 +52,23 @@ class App extends Component {
     });
   }
 
-  createPlaylist = e => {
+  createGenrePlaylist = e => {
     e.preventDefault();
-    console.log(this.props);
     let genre = this.props.genre;
-    console.log("create function genre" + genre);
     spotifyApi.getRecommendations({ seed_genres: genre }).then(response => {
-      this.props.createPlaylist(response);
+      this.props.createGenrePlaylist(response);
     });
+  };
+
+  createArtistPlaylist = e => {
+    e.preventDefault();
+    spotifyApi
+      .searchArtists(this.props.artist).then(response => {        
+      let artistId = response.artists.items[0].id
+       spotifyApi.getRecommendations({ seed_artists: artistId }).then(response => {
+          this.props.createArtistPlaylist(response);
+        });
+      });
   };
 
   render() {
@@ -81,7 +90,10 @@ class App extends Component {
             style={{ height: 150 }}
           />
         </div>
-        <PlaylistSelect createList={this.createPlaylist} />
+        <PlaylistSelect
+          createGenreList={this.createGenrePlaylist}
+          createArtistList={this.createArtistPlaylist}
+        />
         {/* {this.props.isLoggedIn && (
           <NowPlaying
             isLoggedIn={this.props.isLoggedIn}
@@ -125,12 +137,14 @@ App.propTypes = {
   thisUser: PropTypes.object,
   setUser: PropTypes.func,
   isLoggedIn: PropTypes.bool,
-  createPlaylist: PropTypes.func
+  createGenrePlaylist: PropTypes.func,
+  createArtistPlaylist: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     genre: state.setGenre,
+    artist: state.setArtist,
     // items: state.items,
     isLoggedIn: state.isLoggedIn,
     user: state.user,
@@ -145,7 +159,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setUser: response => dispatch(actions.setUser(response)),
-    createPlaylist: response => dispatch(actions.userCreatePlaylist(response)),
+    createGenrePlaylist: response => dispatch(actions.userCreatePlaylist(response)),
+    createArtistPlaylist: response => dispatch(actions.userCreatePlaylist(response)),
     loggedIn: bool => dispatch(actions.userIsLoggedIn(bool)),
     getSong: response => dispatch(actions.getUserCurrentSong(response)),
     getPlaylists: response => dispatch(actions.getUserPlaylists(response))
