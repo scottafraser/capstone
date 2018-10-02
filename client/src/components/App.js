@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 // import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
 import PlaylistSelect from "./PlaylistSelect";
+import PushPlaylist from "./PushPlaylist";
 
 //spotify library
 const spotifyApi = new SpotifyWebApi();
@@ -106,7 +107,7 @@ class App extends Component {
         <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button>
-
+        <PushPlaylist />
         <div className="playlists">
           {this.props.createPlaylistTracks.map((track, index) => (
             <div key={index}>
