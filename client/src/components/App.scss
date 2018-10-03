@@ -7,6 +7,10 @@
   margin-top: 5%;
 }
 
+// .searchBar {
+//   size: 3em;
+// }
+
 .playlists {
   display: flex;
   flex-wrap: wrap;
@@ -17,6 +21,7 @@
   }
   img {
     height: 300px;
+    padding: 2%;
   }
 }
 

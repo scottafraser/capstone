@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import * as actions from "../actions/genre";
+// import * as actions from "../actions/genre";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
 import Button from "@material-ui/core/Button";
@@ -12,6 +12,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+
 
 const styles = theme => ({
     button: {
@@ -24,7 +25,6 @@ const styles = theme => ({
 
 const spotifyApi = new SpotifyWebApi();
 
-
 class PushPlaylist extends Component {
   constructor(props) {
     super(props);
@@ -35,19 +35,18 @@ class PushPlaylist extends Component {
   };
 }
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
+    handleClickOpen = () => {
+      this.setState({ open: true });
+    };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+    handleClose = () => {
+      this.setState({ open: false });
+    };
 
     handleChange = e => {
     this.setState({
         playlistTitle: e.target.value,
     });
-    console.log(this.state.playlistTitle);
     };
 
   makePlaylist = () => {
@@ -63,7 +62,8 @@ class PushPlaylist extends Component {
         spotifyApi.addTracksToPlaylist(playlistId, this.state.trackIdArray);
         this.handleClose();
       });
-}
+  }
+
 
   mapPlaylistTrackIds = () => {
     let trackArray = this.props.createPlaylistTracks.map(tracks => tracks.uri);
@@ -117,14 +117,7 @@ class PushPlaylist extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </div>
-        {/* {this.props.createPlaylistTracks.map(track => (
-          <div key={track.id}>
-            <h3>{track.name}</h3>
-            <h3>{track.id}</h3>
-            <br />
-          </div>
-        ))} */}
+        </div>
       </div>
     );
   }
