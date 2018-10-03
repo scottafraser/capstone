@@ -61,6 +61,13 @@ export function GetGenre(string) {
   };
 }
 
+// export function openSnackBar(bool) {
+//   return {
+//     type: 'TOGGLE_SNACKBAR',
+//     toggleSnacks: bool
+//   }
+// }
+
 // export function itemsFetchData(response) {
 //     return (dispatch) => {
 //         dispatch(itemsIsLoading(true));

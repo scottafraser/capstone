@@ -71,6 +71,15 @@ export function userPlaylists(state = [], action) {
   }
 }
 
+// export function toggleSnacks(state = false, action) {
+//   switch (action.type) {
+//     case 'TOGGLE_SNACKS':
+//         return !action.state
+//       default:
+//         return state;
+//   }
+// }
+
 // export function getGenre(state = "", action) {
 //   switch (action.type) {
 //     case "GET_GENRE":

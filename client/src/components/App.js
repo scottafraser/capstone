@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
 // import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
 import PlaylistSelect from "./PlaylistSelect";
-import  DrawerList  from "./DrawerList";
 // import PushPlaylist from "./PushPlaylist";
 
 //spotify library
