@@ -25,7 +25,7 @@ const styles = {
   },
   row: {
     display: "flex",
-
+    alignItems: 'center'
   },
   avatar: {
     margin: 10
@@ -47,19 +47,14 @@ class ButtonAppBar extends Component {
   };
 
   handleClose = () => {
-    console.log(this.state);
     this.setState({ anchorEl: null });
   };
   
   render() {
     const { anchorEl } = this.state;
-    console.log(anchorEl);
-    
     const { classes } = this.props;
     const open = Boolean(anchorEl);
-
-    console.log(this.state)
-
+    
     let loggy = (
       <Button href="http://localhost:8888" color="inherit">
         Login to Spotify
@@ -102,7 +97,7 @@ class ButtonAppBar extends Component {
               >
                 <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                 <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                <MenuItem href="http://localhost:3000/" onClick={this.handleClose}>Logout</MenuItem>
               </Menu>
           
             {/* <MenuIcon /> */}
