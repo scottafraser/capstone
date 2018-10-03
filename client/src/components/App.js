@@ -64,13 +64,18 @@ class App extends Component {
   createArtistPlaylist = e => {
     e.preventDefault();
     spotifyApi
-      .searchArtists(this.props.artist).then(response => {        
+      .searchArtists(this.props.artist).then(response => {
+      if (response.artists.items[0] === undefined) {
+       console.log('nope')
+      } else {    
       let artistId = response.artists.items[0].id
        spotifyApi.getRecommendations({ seed_artists: artistId }).then(response => {
           this.props.createArtistPlaylist(response);
         });
+        }
       });
   };
+
 
   render() {
     if (this.props.hasErrored) {

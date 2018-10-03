@@ -36,108 +36,134 @@ const styles = theme => ({
 class PlaylistSelect extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       localGenre: "",
       localArtist: "",
       showGenre: false,
       showArtist: false,
-      showSave: false,
+      showSave: false
     };
   }
 
   handleGenreChange = e => {
     this.setState({
-      localGenre: e.target.value,
+      localGenre: e.target.value
     });
   };
 
   handleArtistChange = e => {
     this.setState({
-      localArtist: e.target.value,
+      localArtist: e.target.value
     });
   };
 
   toggleSave = () => {
     this.setState({
       showSave: !this.state.showSave
-    })
-  }
+    });
+  };
 
-  onClick = e => {
+  onAritstClick = (e) => {
     this.toggleSave();
-    this.props.createArtistList(e)
-  }
+    this.props.createArtistList(e);
+  };
+
+  onGenreClick = (e) => {
+    this.toggleSave();
+    this.props.createGenreList(e);
+  };
 
   toggleArtist = () => {
     this.setState({
-      showArtist : !this.state.showArtist,
+      showArtist: !this.state.showArtist,
       showGenre: false
-    })
-  }
+    });
+  };
 
   toggleGenre = () => {
     this.setState({
-      showGenre : !this.state.showGenre,
+      showGenre: !this.state.showGenre,
       showArtist: false
-    })
-  }
+    });
+  };
 
   componentDidUpdate() {
-    this.props.setGenre(this.state.localGenre)
-    this.props.setArtist(this.state.localArtist)
+    this.props.setGenre(this.state.localGenre);
+    this.props.setArtist(this.state.localArtist);
   }
-
 
   render() {
     const { classes } = this.props;
- 
-    
+
     return (
       <div>
-        <Button onClick={this.toggleArtist} variant="contained" color="primary" className={classes.button}>
+        <Button
+          onClick={this.toggleArtist}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
           Artist
         </Button>
-        <Button onClick={this.toggleGenre} variant="contained" color="primary" className={classes.button}>
+        <Button
+          onClick={this.toggleGenre}
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
           Genre
         </Button>
-        {this.state.showGenre &&         
-        <div>
-          <form className="{classes.container}" noValidate autoComplete="off">
-            <TextField
-              id="outlined-genre"
-              label="Genre"
-              className={classes.textField}
-              value={this.props.genre}
-              onChange={this.handleGenreChange}
-              margin="normal"
-              variant="outlined"
-            />
-          </form>
-          <Button onClick={this.props.createGenreList} variant="contained" color="primary" className={classes.button}>
-            Create Playlist
-          </Button>
-        </div> }
-        {this.state.showArtist && 
-        <div>
-          <form className="{classes.container}" noValidate autoComplete="off">
-            <TextField
-              id="outlined-artist"
-              label="Artist"
-              className={classes.textField}
-              value={this.props.artist}
-              onChange={this.handleArtistChange}
-              margin="normal"
-              variant="outlined"
-            />
-          </form>
-          <Button onClick={this.onClick} variant="contained" color="primary" className={classes.button}>
-            Create Playlist
-          </Button>
-            </div>}
-          {this.state.showSave && 
-            <div>
-             <PushPlaylist />
-          </div>}
+        {this.state.showGenre && (
+          <div>
+            <form className="{classes.container}" noValidate autoComplete="off">
+              <TextField
+                id="outlined-genre"
+                label="Genre"
+                className={classes.textField}
+                value={this.props.genre}
+                onChange={this.handleGenreChange}
+                margin="normal"
+                variant="outlined"
+              />
+            </form>
+            <Button
+              onClick={this.onGenreClick}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Create Playlist
+            </Button>
+          </div>
+        )}
+        {this.state.showArtist && (
+          <div>
+            <form className="{classes.container}" noValidate autoComplete="off">
+              <TextField
+                id="outlined-artist"
+                label="Artist"
+                className={classes.textField}
+                value={this.props.artist}
+                onChange={this.handleArtistChange}
+                margin="normal"
+                variant="outlined"
+              />
+            </form>
+            <Button
+              onClick={this.onArtistClick}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Create Playlist
+            </Button>
+          </div>
+        )}
+        {this.state.showSave && (
+          <div>
+            <PushPlaylist />
+          </div>
+        )}
       </div>
     );
   }
