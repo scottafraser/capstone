@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 // import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
 import PlaylistSelect from "./PlaylistSelect";
+import  DrawerList  from "./DrawerList";
 // import PushPlaylist from "./PushPlaylist";
 
 //spotify library
@@ -79,45 +80,34 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
-    console.log(this.props.createPlaylistTracks) 
     return (
-      <div className="App">
+    <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn} />
-        <div>
-          <img
-            src={record}
-            alt="record"
-            className="App-logo"
-            style={{ height: 150 }}
-          />
-        </div>
-        <PlaylistSelect
-          createGenreList={this.createGenrePlaylist}
-          createArtistList={this.createArtistPlaylist}
-        />
-        {/* {this.props.isLoggedIn && (
+        <div className="mainBody">
+          <img src={record} alt="record" className="App-logo" style={{ height: 150 }} />
+          <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} />
+          {/* {this.props.isLoggedIn && (
           <NowPlaying
             isLoggedIn={this.props.isLoggedIn}
             getNowPlaying={this.props.getSong}
             nowPlaying={this.props.nowPlaying}
           />
         )} */}
-        <br />
-        {/* <button onClick={() => this.getPlaylists()}>
+          <br />
+          {/* <button onClick={() => this.getPlaylists()}>
           Check User Playlists
         </button> */}
-        <div className="playlists">
-          {this.props.createPlaylistTracks.map((track, index) => (
-            <div key={index}>
-              <h3>{track.name}</h3>
-              <h3>{track.artists[0].name}</h3>
-              <br />
-              <img src={track.album.images[1].url} alt="album art" />
-            </div>
-          ))}
-        </div>
+          <div className="playlists">
+            {this.props.createPlaylistTracks.map((track, index) => (
+              <div key={index}>
+                <h3>{track.name}</h3>
+                <h3>{track.artists[0].name}</h3>
+                <img src={track.album.images[1].url} alt="album art" />
+              </div>
+            ))}
+          </div>
 
-        {/* <div className="playlists">
+          {/* <div className="playlists">
           <h1>USER PLAYLISTS</h1>
           {this.props.userPlaylists.map((playlist, index) => (
             <div key={index}>
@@ -127,9 +117,10 @@ class App extends Component {
             </div>
           ))}
         </div> */}
+
+        </div>
       </div>
-    );
-  }
+    )}
 }
 
 App.propTypes = {

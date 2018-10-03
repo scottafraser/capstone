@@ -1,7 +1,10 @@
 .App {
-  text-align: center;
-  // background-image: linear-gradient(white, grey);
+ text-align: center;
   background-image: 100%;
+}
+
+.mainBody {
+  margin-top: 5%;
 }
 
 .playlists {
@@ -15,11 +18,6 @@
   img {
     height: 300px;
   }
-}
-
-div,
-button {
-  margin: 10px;
 }
 
 .App-logo {
