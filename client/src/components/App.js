@@ -8,12 +8,22 @@ import PropTypes from "prop-types";
 // import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
 import PlaylistSelect from "./PlaylistSelect";
+import { Switch, Route, Link } from "react-router-dom";
+import About from './About'
 // import PushPlaylist from "./PushPlaylist";
 
 //spotify library
 const spotifyApi = new SpotifyWebApi();
 
+const token = window.location.hash.substring();
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      bearerToken: window.location.hash.substring()
+  }
+}
   componentDidMount() {
     var hashParams = {};
     var e,
@@ -25,6 +35,7 @@ class App extends Component {
       e = r.exec(q);
     }
     const token = hashParams.access_token;
+    // this.setState({ bearerToken: window.location.hash.substring()})
     if (token) {
       spotifyApi.setAccessToken(token);
     }
@@ -84,19 +95,22 @@ class App extends Component {
     if (this.props.isLoading) {
       return <p>Loading…</p>;
     }
+    console.log(token)
     return (
     <div className="App">
-        <NavBar user={this.props.user} login={this.props.isLoggedIn} />
+        <NavBar user={this.props.user} login={this.props.isLoggedIn}/>
         <div className="mainBody">
-          <img src={record} alt="record" className="App-logo" style={{ height: 150 }} />
-          <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} />
+           
+            <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} />
+        
+          {/* <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} /> */}
           {/* {this.props.isLoggedIn && (
           <NowPlaying
             isLoggedIn={this.props.isLoggedIn}
             getNowPlaying={this.props.getSong}
             nowPlaying={this.props.nowPlaying}
           />
-        )} */}
+        )} 
           <br />
           {/* <button onClick={() => this.getPlaylists()}>
           Check User Playlists

@@ -104,9 +104,6 @@ class PushPlaylist extends Component {
               onChange={this.handleChange}
               fullWidth
             />
-            <DialogContentText>
-                Create a playlist with these songs, this will save to your spotify account.
-            </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
