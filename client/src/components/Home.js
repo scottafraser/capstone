@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class About extends Component {
+class Home extends Component {
     render() {
         return (
             <div>
-                <h1>hey</h1>
-            
+                <h1>Welcome</h1>
+                
             </div>
         );
     }
 }
 
-About.propTypes = {
+Home.propTypes = {
 
 };
 
-export default About;
+export default Home;

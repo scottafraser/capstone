@@ -7,9 +7,11 @@ import NavBar from "./NavBar";
 import PropTypes from "prop-types";
 // import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
+import * as navActions from '../actions/nav'
 import PlaylistSelect from "./PlaylistSelect";
 import { Switch, Route, Link } from "react-router-dom";
 import About from './About'
+import Home from './Home'
 // import PushPlaylist from "./PushPlaylist";
 
 //spotify library
@@ -89,33 +91,25 @@ class App extends Component {
 
 
   render() {
-    if (this.props.hasErrored) {
-      return <p>Sorry! There was an error loading the items</p>;
-    }
-    if (this.props.isLoading) {
-      return <p>Loading…</p>;
-    }
+    // if (this.props.hasErrored) {
+    //   return <p>Sorry! There was an error loading the items</p>;
+    // }
+    // if (this.props.isLoading) {
+    //   return <p>Loading…</p>;
+    // }
     console.log(token)
     return (
     <div className="App">
         <NavBar user={this.props.user} login={this.props.isLoggedIn}/>
         <div className="mainBody">
-           
-            <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} />
+        {/* {this.props.goToHome === true && <Home />}
+        {this.props.goToAbout && <About /> } */}
+          <img src={record} alt="record" className="App-logo" style={{ height: 150 }} />
+        {this.props.isLoggedIn &&
+          <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} />}
         
-          {/* <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} /> */}
-          {/* {this.props.isLoggedIn && (
-          <NowPlaying
-            isLoggedIn={this.props.isLoggedIn}
-            getNowPlaying={this.props.getSong}
-            nowPlaying={this.props.nowPlaying}
-          />
-        )} 
-          <br />
-          {/* <button onClick={() => this.getPlaylists()}>
-          Check User Playlists
-        </button> */}
-          <div className="playlists">
+
+          <div className="playlists"> 
             {this.props.createPlaylistTracks.map((track, index) => (
               <div key={index}>
                 <h3>{track.name}</h3>
@@ -137,7 +131,7 @@ class App extends Component {
         </div> */}
 
         </div>
-      </div>
+        </div>
     )}
 }
 
@@ -157,6 +151,9 @@ const mapStateToProps = state => {
     isLoggedIn: state.isLoggedIn,
     user: state.user,
     createPlaylistTracks: state.createPlaylistTracks,
+    goToHome: state.goToHome,
+    goToAbout: state.goToAbout,
+    goToPlaylistSelect: state.goToPlaylistSelect,
     // nowPlaying: state.nowPlaying,
     userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
@@ -171,8 +168,8 @@ const mapDispatchToProps = dispatch => {
     createArtistPlaylist: response => dispatch(actions.userCreatePlaylist(response)),
     loggedIn: bool => dispatch(actions.userIsLoggedIn(bool)),
     getSong: response => dispatch(actions.getUserCurrentSong(response)),
-    getPlaylists: response => dispatch(actions.getUserPlaylists(response))
-    // removeItem: (index) => dispatch(deleteItem(index))
+    getPlaylists: response => dispatch(actions.getUserPlaylists(response)),
+    // goToHome: response => dispatch(navActions.routeToHome(response)),
   };
 };
 
@@ -182,6 +179,7 @@ export default connect(
 )(App);
 
 // getRecentTracks() {
+
 //   spotifyApi.getMyRecentlyPlayedTracks().then(response => {
 //     this.setState({ savedTracks: response.items });
 //   });
@@ -206,3 +204,16 @@ export default connect(
             <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
           </div>
         )} */
+
+        //   <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} /> * /}
+        //  this.props.isLoggedIn && (
+        //   <NowPlaying
+        //   isLoggedIn={this.props.isLoggedIn}
+        //   getNowPlaying={this.props.getSong}
+        //   nowPlaying={this.props.nowPlaying}
+        // />
+
+        // <button onClick={() => this.getPlaylists()}>
+        //   Check User Playlists
+        //  </button>
+
