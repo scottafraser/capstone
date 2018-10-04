@@ -122,7 +122,7 @@ class ButtonAppBar extends Component {
               color="inherit"
               className={classes.grow}
             >
-              Spotify Playlist Generator
+              {/* Spotify Playlist Generator */}
             </Typography>
             {loggy}
           </Toolbar>
