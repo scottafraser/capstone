@@ -11,6 +11,9 @@ import Avatar from "@material-ui/core/Avatar";
 import classNames from "classnames";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { connect } from "react-redux";
+import compose from "recompose/compose";
+import * as actions from '../actions/nav'
 
 const styles = {
   root: {
@@ -25,7 +28,7 @@ const styles = {
   },
   row: {
     display: "flex",
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatar: {
     margin: 10
@@ -49,6 +52,19 @@ class ButtonAppBar extends Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
+
+  handleHome = () => {
+    this.props.goToHome()
+    this.handleClose()
+  }
+  handleAbout = () => {
+    this.props.goToAbout()
+    this.handleClose()
+  }
+  handlePlaylistSelect = () => {
+    this.props.goToPlaylistSelect()
+    this.handleClose()
+  }
   
   render() {
     const { anchorEl } = this.state;
@@ -95,9 +111,9 @@ class ButtonAppBar extends Component {
                 open={open}
                 onClose={this.handleClose}
               >
-                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                <MenuItem href="http://localhost:3000/" onClick={this.handleClose}>Logout</MenuItem>
+                <MenuItem onClick={this.handleHome}>Home</MenuItem>
+                <MenuItem onClick={this.handlePlaylistSelect}>Playlists</MenuItem>
+                <MenuItem onClick={this.handleAbout}>About</MenuItem>
               </Menu>
           
             {/* <MenuIcon /> */}
@@ -106,7 +122,7 @@ class ButtonAppBar extends Component {
               color="inherit"
               className={classes.grow}
             >
-              Sweet Spotify Thing
+              Spotify Playlist Generator
             </Typography>
             {loggy}
           </Toolbar>
@@ -116,8 +132,33 @@ class ButtonAppBar extends Component {
   }
 }
 
+
+
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(ButtonAppBar);
+const mapStateToProps = state => {
+  return {
+    genre: state.genre,
+    artist: state.artist,
+    showHome: state.showHome
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return { 
+    goToHome: response => dispatch(actions.routeToHome(response)),
+    goToAbout: response => dispatch(actions.routeToAbout(response)),
+    goToPlaylistSelect: response => dispatch(actions.routeToPlaylistSelect(response))
+  };
+};
+
+
+export default compose(
+  withStyles(styles, { name: "ButtonAppBar" }),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(ButtonAppBar);

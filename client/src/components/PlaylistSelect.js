@@ -64,7 +64,6 @@ class PlaylistSelect extends React.Component {
   };
 
   onArtistClick = (e) => {
-    console.log('here')
     this.toggleSave();
     this.props.createArtistList(e);
   };
