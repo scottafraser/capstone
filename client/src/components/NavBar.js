@@ -1,4 +1,4 @@
-import React, {Component } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -13,7 +13,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
-import * as actions from '../actions/nav'
+import * as actions from "../actions/nav";
 
 const styles = {
   root: {
@@ -28,7 +28,7 @@ const styles = {
   },
   row: {
     display: "flex",
-    alignItems: 'center',
+    alignItems: "center"
   },
   avatar: {
     margin: 10
@@ -40,10 +40,9 @@ const styles = {
 };
 
 class ButtonAppBar extends Component {
-    state = {
-      anchorEl: null
-    };
-  
+  state = {
+    anchorEl: null
+  };
 
   handleClick = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -54,28 +53,40 @@ class ButtonAppBar extends Component {
   };
 
   handleHome = () => {
-    this.props.goToHome()
-    this.handleClose()
-  }
+    this.props.goToHome();
+    this.handleClose();
+  };
   handleAbout = () => {
-    this.props.goToAbout()
-    this.handleClose()
-  }
+    this.props.goToAbout();
+    this.handleClose();
+  };
   handlePlaylistSelect = () => {
-    this.props.goToPlaylistSelect()
-    this.handleClose()
-  }
-  
+    this.props.goToPlaylistSelect();
+    this.handleClose();
+  };
+
   render() {
     const { anchorEl } = this.state;
     const { classes } = this.props;
     const open = Boolean(anchorEl);
-    
+
     let loggy = (
       <Button href="http://localhost:8888" color="inherit">
         Login to Spotify
       </Button>
     );
+
+    let image = "";
+
+    console.log(this.props.user.images);
+
+    if (this.props.user.images === undefined) {
+      image =
+        "http://foodbank.bradfrostweb.com/patternlab/v7/images/fpo_avatar.png";
+    }
+    // } else {
+    //   image = this.props.user.images[0].url;
+    // }
 
     if (this.props.login === true) {
       loggy = (
@@ -83,7 +94,7 @@ class ButtonAppBar extends Component {
           <h3>{this.props.user.display_name}</h3>
           <Avatar
             alt={this.props.user.display_name}
-            src={this.props.user.images[0].url}
+            src={image}
             className={classNames(classes.avatar, classes.bigAvatar)}
           />
         </div>
@@ -92,30 +103,29 @@ class ButtonAppBar extends Component {
 
     return (
       <div className={classes.root}>
-      
         <AppBar position="static">
           <Toolbar>
             <IconButton
               className={classes.menuButton}
               color="inherit"
               aria-label="Menu"
-              aria-owns={open ? 'simple-menu' : null}
+              aria-owns={open ? "simple-menu" : null}
               aria-haspopup="true"
               onClick={this.handleClick}
             >
               <MenuIcon />
             </IconButton>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={this.handleClose}
-              >
-                <MenuItem onClick={this.handleHome}>Home</MenuItem>
-                <MenuItem onClick={this.handlePlaylistSelect}>Playlists</MenuItem>
-                <MenuItem onClick={this.handleAbout}>About</MenuItem>
-              </Menu>
-          
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={this.handleClose}
+            >
+              <MenuItem onClick={this.handleHome}>Home</MenuItem>
+              <MenuItem onClick={this.handlePlaylistSelect}>Playlists</MenuItem>
+              <MenuItem onClick={this.handleAbout}>About</MenuItem>
+            </Menu>
+
             {/* <MenuIcon /> */}
             <Typography
               variant="title"
@@ -132,8 +142,6 @@ class ButtonAppBar extends Component {
   }
 }
 
-
-
 ButtonAppBar.propTypes = {
   classes: PropTypes.object.isRequired
 };
@@ -147,13 +155,13 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { 
+  return {
     goToHome: response => dispatch(actions.routeToHome(response)),
     goToAbout: response => dispatch(actions.routeToAbout(response)),
-    goToPlaylistSelect: response => dispatch(actions.routeToPlaylistSelect(response))
+    goToPlaylistSelect: response =>
+      dispatch(actions.routeToPlaylistSelect(response))
   };
 };
-
 
 export default compose(
   withStyles(styles, { name: "ButtonAppBar" }),
