@@ -13,8 +13,8 @@ var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
 
-var client_id = "b81cc33f5a3040669b31057a058ea79d"; // Your client id
-var client_secret = "5e764ff0954147309f9ad50f1f15ee05"; // Your secret
+var client_id = process.env.client_id; // Your client id
+var client_secret = process.env.client_secret; // Your secret
 var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
 
 /**
@@ -47,7 +47,8 @@ app.get("/login", function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = "user-top-read user-read-private user-read-email user-read-playback-state user-library-read playlist-read-private user-read-recently-played playlist-modify-public playlist-modify-private";
+  var scope =
+    "user-top-read user-read-private user-read-email user-read-playback-state user-library-read playlist-read-private user-read-recently-played playlist-modify-public playlist-modify-private";
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
