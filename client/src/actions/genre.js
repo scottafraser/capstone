@@ -6,11 +6,8 @@ export function setGenreState(string) {
 }
 
 export function setArtistState(string) {
-  console.log(string);
   return {
     type: "SET_ARTIST",
     setArtist: string
   };
 }
-
-

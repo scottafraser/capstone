@@ -10,7 +10,6 @@ export function setGenre(state = {}, action) {
 export function setArtist(state = {}, action) {
   switch (action.type) {
     case "SET_ARTIST":
-      console.log('reducer log ' + action.setArtist);
       return action.setArtist;
     default:
       return state;
