@@ -43,6 +43,10 @@ app
   .use(cors())
   .use(cookieParser());
 
+var bodyParser = require("body-parser");
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 app.get("/login", function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
