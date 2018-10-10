@@ -34,6 +34,7 @@ var generateRandomString = function(length) {
 };
 
 var stateKey = "spotify_auth_state";
+console.log(stateKey + "here");
 
 var app = express();
 
