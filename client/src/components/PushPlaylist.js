@@ -12,15 +12,16 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
+import AddIcon from "@material-ui/icons/Add";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = theme => ({
-    button: {
-        margin: theme.spacing.unit,
-    },
-    input: {
-        display: 'none',
-    },
+  button: {
+    margin: theme.spacing.unit
+  },
+  input: {
+    display: "none"
+  }
 });
 
 const spotifyApi = new SpotifyWebApi();
@@ -29,25 +30,25 @@ class PushPlaylist extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      playlistTitle: '',  
+      playlistTitle: "",
       trackIdArray: [],
-      open: false,
+      open: false
+    };
+  }
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
   };
-}
 
-    handleClickOpen = () => {
-      this.setState({ open: true });
-    };
+  handleClose = () => {
+    this.setState({ open: false });
+  };
 
-    handleClose = () => {
-      this.setState({ open: false });
-    };
-
-    handleChange = e => {
+  handleChange = e => {
     this.setState({
-        playlistTitle: e.target.value,
+      playlistTitle: e.target.value
     });
-    };
+  };
 
   makePlaylist = () => {
     spotifyApi
@@ -62,8 +63,7 @@ class PushPlaylist extends Component {
         spotifyApi.addTracksToPlaylist(playlistId, this.state.trackIdArray);
         this.handleClose();
       });
-  }
-
+  };
 
   mapPlaylistTrackIds = () => {
     let trackArray = this.props.createPlaylistTracks.map(tracks => tracks.uri);
@@ -76,44 +76,48 @@ class PushPlaylist extends Component {
     const { classes } = this.props;
     return (
       <div>
-          <div>
-        <Button    
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={this.handleClickOpen}>
-          Save Playlist
-          </Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Save Playlist</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-             Create a playlist with these songs, this will save to your spotify account.
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Title"
-              type="title"
-              value={this.state.playlistTitle}
-              onChange={this.handleChange}
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
+        <div>
+          <Tooltip title="Push to Spotify Account">
+            <Button
+              variant="fab"
+              color="primary"
+              aria-label="Add"
+              className={classes.button}
+            >
+              <AddIcon />
             </Button>
-            <Button onClick={this.makePlaylist} color="primary">
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
+          </Tooltip>
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Save Playlist</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Create a playlist with these songs, this will save to your
+                spotify account.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Title"
+                type="title"
+                value={this.state.playlistTitle}
+                onChange={this.handleChange}
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.makePlaylist} color="primary">
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </div>
     );
@@ -121,22 +125,22 @@ class PushPlaylist extends Component {
 }
 
 PushPlaylist.propTypes = {
-    classes: PropTypes.object.isRequired,
-    genre: PropTypes.string,
-    artist: PropTypes.string,
+  classes: PropTypes.object.isRequired,
+  genre: PropTypes.string,
+  artist: PropTypes.string
 };
 
 const mapStateToProps = state => {
-    return {
-    createPlaylistTracks: state.createPlaylistTracks,
+  return {
+    createPlaylistTracks: state.createPlaylistTracks
     // artist: state.artist
-    };
+  };
 };
 
 export default compose(
-    withStyles(styles, { name: "PushPlaylist" }),
-    connect(
-        mapStateToProps,
-        // mapDispatchToProps
-    )
+  withStyles(styles, { name: "PushPlaylist" }),
+  connect(
+    mapStateToProps
+    // mapDispatchToProps
+  )
 )(PushPlaylist);

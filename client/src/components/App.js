@@ -10,14 +10,33 @@ import * as actions from "../actions/items";
 import * as navActions from "../actions/nav";
 import PlaylistSelect from "./PlaylistSelect";
 import Card from "./Card";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { Switch, Route, Link } from "react-router-dom";
 import About from "./About";
 import Home from "./Home";
-// import PushPlaylist from "./PushPlaylist";
+import purple from "@material-ui/core/colors/purple";
+import green from "@material-ui/core/colors/green";
 
-//spotify library
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+    secondary: green
+  },
+  status: {
+    danger: "orange"
+  },
+  typography: {
+    useNextVariants: true
+  }
+});
+
 const spotifyApi = new SpotifyWebApi();
 const token = window.location.hash.substring();
+// const theme = createMuiTheme({
+//   typography: {
+//     useNextVariants: true
+//   }
+// });
 
 class App extends Component {
   constructor(props) {
@@ -101,48 +120,38 @@ class App extends Component {
     // }
     console.log(token);
     return (
-      <div className="App">
-        <NavBar user={this.props.user} login={this.props.isLoggedIn} />
-        <div className="mainBody">
-          {/* {this.props.goToHome === true && <Home />}
+      <MuiThemeProvider theme={theme}>
+        <div className="App">
+          <NavBar user={this.props.user} login={this.props.isLoggedIn} />
+          <div className="mainBody">
+            {/* {this.props.goToHome === true && <Home />}
         {this.props.goToAbout && <About /> } */}
-          <img
-            src={record}
-            alt="record"
-            className="App-logo"
-            style={{ height: 150 }}
-          />
-          {this.props.isLoggedIn && (
-            <PlaylistSelect
-              createGenreList={this.createGenrePlaylist}
-              createArtistList={this.createArtistPlaylist}
+            <img
+              src={record}
+              alt="record"
+              className="App-logo"
+              style={{ height: 150 }}
             />
-          )}
-
-          <div className="playlists">
-            {this.props.createPlaylistTracks.map((track, index) => (
-              // <div key={index}>
-              <Card
-                name={track.name}
-                artist={track.artist}
-                album={track.album.images[1].url}
+            {this.props.isLoggedIn && (
+              <PlaylistSelect
+                createGenreList={this.createGenrePlaylist}
+                createArtistList={this.createArtistPlaylist}
               />
-              // </div>
-            ))}
-          </div>
+            )}
 
-          {/* <div className="playlists">
-          <h1>USER PLAYLISTS</h1>
-          {this.props.userPlaylists.map((playlist, index) => (
-            <div key={index}>
-              <h3>{playlist.name}</h3>
-              <br />
-              <img src={playlist.images[0].url} alt="playlist cover art" />
+            <div className="playlists">
+              {this.props.createPlaylistTracks.map((track, index) => (
+                <Card
+                  id={track.id}
+                  name={track.name}
+                  artist={track.artist}
+                  album={track.album.images[1].url}
+                />
+              ))}
             </div>
-          ))}
-        </div> */}
+          </div>
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }

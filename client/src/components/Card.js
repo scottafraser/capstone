@@ -29,7 +29,7 @@ function MediaCard(props) {
         <CardMedia
           className={classes.media}
           image={props.album}
-          title="Contemplative Reptile"
+          title={props.key}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
@@ -43,7 +43,7 @@ function MediaCard(props) {
           Replace
         </Button>
         <Button size="small" color="primary">
-          Save song to library
+          Make Playlist on Song
         </Button>
       </CardActions>
     </Card>

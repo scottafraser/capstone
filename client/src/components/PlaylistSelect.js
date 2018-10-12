@@ -7,7 +7,7 @@ import * as actions from "../actions/genre";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
 import Button from "@material-ui/core/Button";
-import PushPlaylist from './PushPlaylist'
+import PushPlaylist from "./PushPlaylist";
 
 const styles = theme => ({
   container: {
@@ -26,11 +26,11 @@ const styles = theme => ({
     width: 200
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   input: {
-    display: 'none',
-  },
+    display: "none"
+  }
 });
 
 class PlaylistSelect extends React.Component {
@@ -57,25 +57,18 @@ class PlaylistSelect extends React.Component {
     });
   };
 
-  toggleSave = () => {
-    this.setState({
-      showSave: !this.state.showSave
-    });
-  };
-
-  onArtistClick = (e) => {
-    this.toggleSave();
+  onArtistClick = e => {
     this.props.createArtistList(e);
   };
 
-  onGenreClick = (e) => {
-    this.toggleSave();
+  onGenreClick = e => {
     this.props.createGenreList(e);
   };
 
   toggleArtist = () => {
     this.setState({
       showArtist: !this.state.showArtist,
+      showSave: true,
       showGenre: false
     });
   };
@@ -83,6 +76,7 @@ class PlaylistSelect extends React.Component {
   toggleGenre = () => {
     this.setState({
       showGenre: !this.state.showGenre,
+      showSave: true,
       showArtist: false
     });
   };
@@ -94,7 +88,7 @@ class PlaylistSelect extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props)
+    console.log(this.props);
     return (
       <div>
         <Button
@@ -172,7 +166,7 @@ class PlaylistSelect extends React.Component {
 PlaylistSelect.propTypes = {
   classes: PropTypes.object.isRequired,
   genre: PropTypes.string,
-  artist: PropTypes.string,
+  artist: PropTypes.string
 };
 
 const mapStateToProps = state => {
