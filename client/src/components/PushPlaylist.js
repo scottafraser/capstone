@@ -83,6 +83,7 @@ class PushPlaylist extends Component {
               color="primary"
               aria-label="Add"
               className={classes.button}
+              onClick={this.handleClickOpen}
             >
               <AddIcon />
             </Button>

@@ -87,11 +87,9 @@ class App extends Component {
 
   createGenrePlaylist = e => {
     e.preventDefault();
-    console.log("create genre itemsHasErrored");
     let genre = this.props.genre;
     spotifyApi.getRecommendations({ seed_genres: genre }).then(response => {
       this.props.createGenrePlaylist(response);
-      console.log("create genre" + response);
     });
   };
 
@@ -99,11 +97,10 @@ class App extends Component {
     e.preventDefault();
     spotifyApi.searchArtists(this.props.artist).then(response => {
       if (response.artists.items[0] === undefined) {
-        console.log("nope");
+        console.log("no artists found");
       } else {
         let artistId = response.artists.items[0].id;
         let artistList = response.artists.items;
-        console.log(artistList);
         spotifyApi
           .getRecommendations({ seed_artists: artistId })
           .then(response => {

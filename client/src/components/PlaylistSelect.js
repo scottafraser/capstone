@@ -58,6 +58,7 @@ class PlaylistSelect extends React.Component {
   };
 
   onArtistClick = e => {
+    console.log("here");
     this.props.createArtistList(e);
   };
 
