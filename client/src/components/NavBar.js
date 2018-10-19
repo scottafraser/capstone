@@ -83,10 +83,9 @@ class ButtonAppBar extends Component {
     if (this.props.user.images === undefined) {
       image =
         "http://foodbank.bradfrostweb.com/patternlab/v7/images/fpo_avatar.png";
+    } else {
+      image = this.props.user.images[0].url;
     }
-    // } else {
-    //   image = this.props.user.images[0].url;
-    // }
 
     if (this.props.login === true) {
       loggy = (
