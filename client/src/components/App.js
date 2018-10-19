@@ -31,12 +31,6 @@ const theme = createMuiTheme({
 });
 
 const spotifyApi = new SpotifyWebApi();
-const token = window.location.hash.substring();
-// const theme = createMuiTheme({
-//   typography: {
-//     useNextVariants: true
-//   }
-// });
 
 class App extends Component {
   constructor(props) {
@@ -56,7 +50,6 @@ class App extends Component {
       e = r.exec(q);
     }
     const token = hashParams.access_token;
-    // this.setState({ bearerToken: window.location.hash.substring()})
     if (token) {
       spotifyApi.setAccessToken(token);
     }
@@ -65,6 +58,7 @@ class App extends Component {
       let userLoggedIn = token ? true : false;
       this.props.loggedIn(userLoggedIn);
     });
+    window.history.pushState(null, "", "/user");
   }
 
   updateInput = e => {
