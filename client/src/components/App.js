@@ -136,7 +136,11 @@ class App extends Component {
             )}
             <div className="artists">
               {this.state.artistList.map((artist, index) => (
-                <ArtistListChip key={artist.id} artist={artist} />
+                <ArtistListChip
+                  key={index}
+                  artist={artist}
+                  createArtistList={this.createArtistPlaylist}
+                />
               ))}
             </div>
 
