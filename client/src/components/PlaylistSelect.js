@@ -58,7 +58,6 @@ class PlaylistSelect extends React.Component {
   };
 
   onArtistClick = e => {
-    console.log("here");
     this.props.createArtistList(e);
   };
 
@@ -89,7 +88,6 @@ class PlaylistSelect extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.props);
     return (
       <div>
         <Button

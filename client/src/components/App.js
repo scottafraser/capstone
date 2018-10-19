@@ -16,6 +16,7 @@ import About from "./About";
 import Home from "./Home";
 import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
+import ArtistListChip from "./ArtistListChip";
 
 const theme = createMuiTheme({
   palette: {
@@ -36,7 +37,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bearerToken: window.location.hash.substring()
+      artistList: [{}]
     };
   }
   componentDidMount() {
@@ -58,7 +59,7 @@ class App extends Component {
       let userLoggedIn = token ? true : false;
       this.props.loggedIn(userLoggedIn);
     });
-    window.history.pushState(null, "", "/user");
+    // window.history.pushState(null, "", "/user");
   }
 
   updateInput = e => {
@@ -94,7 +95,11 @@ class App extends Component {
         console.log("no artists found");
       } else {
         let artistId = response.artists.items[0].id;
-        let artistList = response.artists.items;
+        let foundArtists = response.artists.items;
+        console.log(foundArtists);
+        this.setState({
+          artistList: foundArtists
+        });
         spotifyApi
           .getRecommendations({ seed_artists: artistId })
           .then(response => {
@@ -111,14 +116,12 @@ class App extends Component {
     // if (this.props.isLoading) {
     //   return <p>Loading…</p>;
     // }
-    console.log(this.props.createPlaylistTracks);
+    console.log("list" + this.state.artistList);
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <NavBar user={this.props.user} login={this.props.isLoggedIn} />
           <div className="mainBody">
-            {/* {this.props.goToHome === true && <Home />}
-        {this.props.goToAbout && <About /> } */}
             <img
               src={record}
               alt="record"
@@ -131,6 +134,11 @@ class App extends Component {
                 createArtistList={this.createArtistPlaylist}
               />
             )}
+            <div className="artists">
+              {this.state.artistList.map((artist, index) => (
+                <ArtistListChip key={artist.id} artist={artist} />
+              ))}
+            </div>
 
             <div className="playlists">
               {this.props.createPlaylistTracks.map((track, index) => (
