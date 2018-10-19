@@ -7,12 +7,13 @@
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
 
+require("dotenv").config();
+
 var express = require("express"); // Express web server framework
 var request = require("request"); // "Request" library
 var cors = require("cors");
 var querystring = require("querystring");
 var cookieParser = require("cookie-parser");
-
 var client_id = process.env.client_id; // Your client id
 var client_secret = process.env.client_secret; // Your secret
 var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
@@ -50,7 +51,7 @@ app
 app.get("/login", function(req, res) {
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-
+  console.log(process.env.client_id);
   // your application requests authorization
   var scope =
     "user-top-read user-read-private user-read-email user-read-playback-state user-library-read playlist-read-private user-read-recently-played playlist-modify-public playlist-modify-private";
