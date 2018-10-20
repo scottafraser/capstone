@@ -89,7 +89,8 @@ class App extends Component {
   };
 
   createArtistPlaylist = e => {
-    e.preventDefault();
+    // e.preventDefault();
+    console.log("app chek" + this.props.artist);
     spotifyApi.searchArtists(this.props.artist).then(response => {
       if (response.artists.items[0] === undefined) {
         console.log("no artists found");

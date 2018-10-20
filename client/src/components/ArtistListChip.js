@@ -24,19 +24,20 @@ class Chips extends React.Component {
     super(props);
   }
 
-  handleClick = (e, newArtist) => {
-    alert("You clicked the Chip."); // eslint-disable-line no-alert
+  handleClick = (newArtist, e) => {
+    alert("You clicked the Chip." + newArtist); // eslint-disable-line no-alert
     this.props.setArtist(newArtist);
     this.props.createArtistList(e);
   };
 
   render() {
+    console.log(this.props);
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Chip
           label={this.props.artist.name}
-          onClick={this.handleClick(this.props.artist.name)}
+          onClick={() => this.handleClick(this.props.artist.name)}
           className={classes.chip}
         />
       </div>
@@ -46,14 +47,14 @@ class Chips extends React.Component {
 
 Chips.propTypes = {
   classes: PropTypes.object.isRequired,
-  artist: PropTypes.object,
-  createArtistList: PropTypes.func
+  artist: PropTypes.object
+  // createArtistList: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
-    genre: state.genre,
-    artist: state.artist
+    // genre: state.genre,
+    // artist: state.artist
   };
 };
 
