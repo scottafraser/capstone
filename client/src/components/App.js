@@ -37,9 +37,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      artistList: [{}]
+      artistList: [],
+      currentArtist: {}
     };
   }
+
   componentDidMount() {
     var hashParams = {};
     var e,
@@ -96,8 +98,10 @@ class App extends Component {
       } else {
         let artistId = response.artists.items[0].id;
         let foundArtists = response.artists.items;
+        // let currentArtistPlaylist = response.artists.items[0];
         this.setState({
           artistList: foundArtists
+          // currentArtist: currentArtistPlaylist
         });
         spotifyApi
           .getRecommendations({ seed_artists: artistId })
@@ -109,15 +113,16 @@ class App extends Component {
   };
 
   updateArtist = newArtist => {
-    console.log(newArtist);
     let artistId = newArtist;
-    console.log("artist id" + artistId);
     spotifyApi.getRecommendations({ seed_artists: artistId }).then(response => {
       this.props.createNewArtistPlaylist(response);
     });
   };
 
   render() {
+    console.log(this.props.currentArtist);
+    if (this.props.artistList === undefined) {
+    }
     // if (this.props.hasErrored) {
     //   return <p>Sorry! There was an error loading the items</p>;
     // }
@@ -129,28 +134,36 @@ class App extends Component {
         <div className="App">
           <NavBar user={this.props.user} login={this.props.isLoggedIn} />
           <div className="mainBody">
-            <img
-              src={record}
-              alt="record"
-              className="App-logo"
-              style={{ height: 150 }}
-            />
-            {this.props.isLoggedIn && (
-              <PlaylistSelect
-                createGenreList={this.createGenrePlaylist}
-                createArtistList={this.createArtistPlaylist}
-              />
-            )}
-            <div className="artists">
-              {this.state.artistList.map((artist, index) => (
-                <ArtistListChip
-                  key={index}
-                  chipArtist={artist}
-                  createArtistList={this.updateArtist}
+            <div className="topInfo">
+              <div>
+                {/* {this.props.currentArtist && (
+                  <p>{this.props.currentArtist.name}</p>
+                )} */}
+              </div>
+              <div>
+                <img
+                  src={record}
+                  alt="record"
+                  className="App-logo"
+                  style={{ height: 150 }}
                 />
-              ))}
+                {this.props.isLoggedIn && (
+                  <PlaylistSelect
+                    createGenreList={this.createGenrePlaylist}
+                    createArtistList={this.createArtistPlaylist}
+                  />
+                )}
+              </div>
+              <div className="artistChips">
+                {this.state.artistList.map((artist, index) => (
+                  <ArtistListChip
+                    key={index}
+                    chipArtist={artist}
+                    createArtistList={this.updateArtist}
+                  />
+                ))}
+              </div>
             </div>
-
             <div className="playlists">
               {this.props.createPlaylistTracks.map((track, index) => (
                 <Card
@@ -172,6 +185,7 @@ App.propTypes = {
   thisUser: PropTypes.object,
   setUser: PropTypes.func,
   isLoggedIn: PropTypes.bool,
+  showArtistSuggestions: PropTypes.bool,
   createGenrePlaylist: PropTypes.func,
   createArtistPlaylist: PropTypes.func
   // songCard: PropTypes.object
