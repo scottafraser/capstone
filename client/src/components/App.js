@@ -89,24 +89,31 @@ class App extends Component {
   };
 
   createArtistPlaylist = e => {
-    // e.preventDefault();
-    console.log("app chek" + this.props.artist);
+    e.preventDefault();
     spotifyApi.searchArtists(this.props.artist).then(response => {
       if (response.artists.items[0] === undefined) {
         console.log("no artists found");
       } else {
         let artistId = response.artists.items[0].id;
         let foundArtists = response.artists.items;
-        console.log(foundArtists);
         this.setState({
           artistList: foundArtists
         });
         spotifyApi
           .getRecommendations({ seed_artists: artistId })
           .then(response => {
-            this.props.createArtistPlaylist(response);
+            this.props.createNewArtistPlaylist(response);
           });
       }
+    });
+  };
+
+  updateArtist = newArtist => {
+    console.log(newArtist);
+    let artistId = newArtist;
+    console.log("artist id" + artistId);
+    spotifyApi.getRecommendations({ seed_artists: artistId }).then(response => {
+      this.props.createNewArtistPlaylist(response);
     });
   };
 
@@ -117,7 +124,6 @@ class App extends Component {
     // if (this.props.isLoading) {
     //   return <p>Loading…</p>;
     // }
-    console.log("list" + this.state.artistList);
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
@@ -139,8 +145,8 @@ class App extends Component {
               {this.state.artistList.map((artist, index) => (
                 <ArtistListChip
                   key={index}
-                  artist={artist}
-                  createArtistList={this.createArtistPlaylist}
+                  chipArtist={artist}
+                  createArtistList={this.updateArtist}
                 />
               ))}
             </div>
@@ -194,7 +200,7 @@ const mapDispatchToProps = dispatch => {
     setUser: response => dispatch(actions.setUser(response)),
     createGenrePlaylist: response =>
       dispatch(actions.userCreatePlaylist(response)),
-    createArtistPlaylist: response =>
+    createNewArtistPlaylist: response =>
       dispatch(actions.userCreatePlaylist(response)),
     loggedIn: bool => dispatch(actions.userIsLoggedIn(bool)),
     getSong: response => dispatch(actions.getUserCurrentSong(response)),

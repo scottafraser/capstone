@@ -22,22 +22,24 @@ const styles = theme => ({
 class Chips extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      localArtist: ""
+    };
   }
 
-  handleClick = (newArtist, e) => {
-    alert("You clicked the Chip." + newArtist); // eslint-disable-line no-alert
+  handleClick = newArtist => {
+    console.log("here 1" + newArtist);
     this.props.setArtist(newArtist);
-    this.props.createArtistList(e);
+    this.props.createArtistList(newArtist);
   };
 
   render() {
-    console.log(this.props);
     const { classes } = this.props;
     return (
       <div className={classes.root}>
         <Chip
-          label={this.props.artist.name}
-          onClick={() => this.handleClick(this.props.artist.name)}
+          label={this.props.chipArtist.name}
+          onClick={() => this.handleClick(this.props.chipArtist.id)}
           className={classes.chip}
         />
       </div>
@@ -46,15 +48,14 @@ class Chips extends React.Component {
 }
 
 Chips.propTypes = {
-  classes: PropTypes.object.isRequired,
-  artist: PropTypes.object
+  classes: PropTypes.object.isRequired
+  // artist: PropTypes.object
   // createArtistList: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
-    // genre: state.genre,
-    // artist: state.artist
+    artist: state.artist
   };
 };
 
