@@ -65,6 +65,13 @@ class ButtonAppBar extends Component {
     this.handleClose();
   };
 
+  isEmpty = obj => {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  };
+
   render() {
     const { anchorEl } = this.state;
     const { classes } = this.props;
@@ -78,9 +85,10 @@ class ButtonAppBar extends Component {
 
     let image = "";
 
-    console.log(this.props.user.images);
+    // console.log(Object.length(this.props.user.images));
 
-    if (this.props.user.images === undefined) {
+    if (this.isEmpty(this.props.user.images)) {
+      console.log(this.props.user);
       image =
         "http://foodbank.bradfrostweb.com/patternlab/v7/images/fpo_avatar.png";
     } else {
