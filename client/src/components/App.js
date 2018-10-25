@@ -61,6 +61,7 @@ class App extends Component {
       let userLoggedIn = token ? true : false;
       this.props.loggedIn(userLoggedIn);
     });
+    this.getNowPlaying();
     // window.history.pushState(null, "", "/user");
   }
 
@@ -119,8 +120,17 @@ class App extends Component {
     });
   };
 
+  getNowPlaying = () => {
+    spotifyApi.getMyCurrentPlaybackState().then(response => {
+      this.props.getSong({
+        name: response.item.name,
+        albumArt: response.item.album.images[2].url
+      });
+    });
+  };
+
   render() {
-    console.log(this.props.currentArtist);
+    console.log(this.props.nowPlaying.name + "props");
     if (this.props.artistList === undefined) {
     }
     // if (this.props.hasErrored) {
@@ -132,7 +142,11 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
-          <NavBar user={this.props.user} login={this.props.isLoggedIn} />
+          <NavBar
+            user={this.props.user}
+            login={this.props.isLoggedIn}
+            nowPlaying={this.props.nowPlaying}
+          />
           <div className="mainBody">
             <div className="topInfo">
               <div>
@@ -202,10 +216,10 @@ const mapStateToProps = state => {
     goToHome: state.goToHome,
     goToAbout: state.goToAbout,
     goToPlaylistSelect: state.goToPlaylistSelect,
-    // nowPlaying: state.nowPlaying,
     userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
-    isLoading: state.itemsIsLoading
+    isLoading: state.itemsIsLoading,
+    nowPlaying: state.nowPlaying
   };
 };
 
@@ -244,16 +258,6 @@ export default connect(
             {console.log(song.track.album.images)}
             <img src={song.track.album.images[1].url} />
           </li>)} */
-
-/* {this.props.isLoggedIn && (
-          <div>
-            <button onClick={() => this.getNowPlaying()}>
-              Check Now Playing
-            </button>
-            <h1>{this.props.nowPlaying.name}</h1>
-            <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
-          </div>
-        )} */
 
 //   <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} /> * /}
 //  this.props.isLoggedIn && (

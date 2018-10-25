@@ -53,9 +53,10 @@ export function user(state = {}, action) {
 export function nowPlaying(state = { name: "Click To See", img: "" }, action) {
   switch (action.type) {
     case "GET_NOW_PLAYING":
+      console.log("reducer fired");
       return {
-        name: action.nowPlaying.item.name,
-        img: action.nowPlaying.item.album.images[0].url
+        name: action.nowPlaying.name,
+        img: action.nowPlaying.albumArt
       };
     default:
       return state;

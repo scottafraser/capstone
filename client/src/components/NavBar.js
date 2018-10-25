@@ -14,6 +14,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
 import * as actions from "../actions/nav";
+import * as itemActions from "../actions/items";
+import SpotifyWebApi from "spotify-web-api-js";
+import SongCard from "./SongCard";
+
+const spotifyApi = new SpotifyWebApi();
 
 const styles = {
   root: {
@@ -56,14 +61,26 @@ class ButtonAppBar extends Component {
     this.props.goToHome();
     this.handleClose();
   };
-  handleAbout = () => {
+  handleLogout = () => {
     window.location = "/#";
     window.open("https://www.spotify.com/us/logout");
     this.handleClose();
   };
-  handlePlaylistSelect = () => {
-    this.props.goToPlaylistSelect();
+  // handlePlaylistSelect = () => {
+  //   this.props.goToPlaylistSelect();
+  //   this.handleClose();
+  // };
+
+  getNowPlaying = () => {
+    spotifyApi.getMyCurrentPlaybackState().then(response => {
+      console.log(response.item);
+      this.props.getSong({
+        name: response.item.name,
+        albumArt: response.item.album.images[2].url
+      });
+    });
     this.handleClose();
+    console.log(this.props.nowPlaying);
   };
 
   isEmpty = obj => {
@@ -72,6 +89,10 @@ class ButtonAppBar extends Component {
     }
     return true;
   };
+
+  // componentShouldUpdate() {
+  //   this.getNowPlaying();
+  // }
 
   render() {
     const { anchorEl } = this.state;
@@ -87,7 +108,6 @@ class ButtonAppBar extends Component {
     let image = "";
 
     if (this.isEmpty(this.props.user.images)) {
-      console.log(this.props.user);
       image =
         "http://foodbank.bradfrostweb.com/patternlab/v7/images/fpo_avatar.png";
     } else {
@@ -127,9 +147,15 @@ class ButtonAppBar extends Component {
               open={open}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleHome}>Home</MenuItem>
-              <MenuItem onClick={this.handlePlaylistSelect}>Playlists</MenuItem>
-              <MenuItem onClick={this.handleAbout}>Logout</MenuItem>
+              {/* <MenuItem onClick={this.handleHome}>Home</MenuItem> */}
+              <SongCard nowPlaying={this.props.nowPlaying}>
+                {/* {this.props.nowPlaying.name}
+                  <br />
+                  <img src={this.props.nowPlaying.img} /> */}
+              </SongCard>
+
+              <MenuItem />
+              <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
             </Menu>
 
             {/* <MenuIcon /> */}
@@ -149,7 +175,8 @@ class ButtonAppBar extends Component {
 }
 
 ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  getCurrentSong: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -157,6 +184,7 @@ const mapStateToProps = state => {
     genre: state.genre,
     artist: state.artist,
     showHome: state.showHome
+    // nowPlaying: state.nowPlaying
   };
 };
 
@@ -165,7 +193,8 @@ const mapDispatchToProps = dispatch => {
     goToHome: response => dispatch(actions.routeToHome(response)),
     goToAbout: response => dispatch(actions.routeToAbout(response)),
     goToPlaylistSelect: response =>
-      dispatch(actions.routeToPlaylistSelect(response))
+      dispatch(actions.routeToPlaylistSelect(response)),
+    getSong: response => dispatch(itemActions.getUserCurrentSong(response))
   };
 };
 
