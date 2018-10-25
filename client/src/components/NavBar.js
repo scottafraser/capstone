@@ -57,7 +57,8 @@ class ButtonAppBar extends Component {
     this.handleClose();
   };
   handleAbout = () => {
-    this.props.goToAbout();
+    window.location = "/#";
+    window.open("https://www.spotify.com/us/logout");
     this.handleClose();
   };
   handlePlaylistSelect = () => {
@@ -84,8 +85,6 @@ class ButtonAppBar extends Component {
     );
 
     let image = "";
-
-    // console.log(Object.length(this.props.user.images));
 
     if (this.isEmpty(this.props.user.images)) {
       console.log(this.props.user);
@@ -130,7 +129,7 @@ class ButtonAppBar extends Component {
             >
               <MenuItem onClick={this.handleHome}>Home</MenuItem>
               <MenuItem onClick={this.handlePlaylistSelect}>Playlists</MenuItem>
-              <MenuItem onClick={this.handleAbout}>About</MenuItem>
+              <MenuItem onClick={this.handleAbout}>Logout</MenuItem>
             </Menu>
 
             {/* <MenuIcon /> */}
