@@ -97,15 +97,28 @@ class App extends Component {
         this.setState({
           artistList: foundArtists
         });
-        this.getRecommendations(artistId);
+        let type = "artist";
+        this.getRecommendations(artistId, type);
       }
     });
   };
 
-  getRecommendations = artistId => {
-    spotifyApi.getRecommendations({ seed_artists: artistId }).then(response => {
-      this.props.createNewArtistPlaylist(response);
-    });
+  createSongList = (e, songId) => {
+    e.preventDefault();
+    let type = "song";
+    this.getRecommendations(songId, type);
+  };
+
+  getRecommendations = (Id, type) => {
+    if (type === "artist") {
+      spotifyApi.getRecommendations({ seed_artists: Id }).then(response => {
+        this.props.createNewArtistPlaylist(response);
+      });
+    } else {
+      spotifyApi.getRecommendations({ seed_tracks: Id }).then(response => {
+        this.props.createNewArtistPlaylist(response);
+      });
+    }
   };
 
   updateArtist = newArtist => {
@@ -179,6 +192,7 @@ class App extends Component {
                   name={track.name}
                   artist={track.artist}
                   album={track.album.images[1].url}
+                  createSongList={this.props.createSongList}
                 />
               ))}
             </div>
@@ -195,15 +209,14 @@ App.propTypes = {
   isLoggedIn: PropTypes.bool,
   showArtistSuggestions: PropTypes.bool,
   createGenrePlaylist: PropTypes.func,
-  createArtistPlaylist: PropTypes.func
-  // songCard: PropTypes.object
+  createArtistPlaylist: PropTypes.func,
+  createSongList: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     genre: state.setGenre,
     artist: state.setArtist,
-    // items: state.items,
     isLoggedIn: state.isLoggedIn,
     user: state.user,
     createPlaylistTracks: state.createPlaylistTracks,
