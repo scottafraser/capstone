@@ -5,15 +5,10 @@ import SpotifyWebApi from "spotify-web-api-js";
 import record from "../images/record.jpeg";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
-// import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
-import * as navActions from "../actions/nav";
 import PlaylistSelect from "./PlaylistSelect";
 import Card from "./Card";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { Switch, Route, Link } from "react-router-dom";
-import About from "./About";
-import Home from "./Home";
 import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
 import ArtistListChip from "./ArtistListChip";
@@ -61,7 +56,7 @@ class App extends Component {
       let userLoggedIn = token ? true : false;
       this.props.loggedIn(userLoggedIn);
     });
-    this.getNowPlaying();
+    // this is the url mask
     // window.history.pushState(null, "", "/user");
   }
 
@@ -130,7 +125,6 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.props.nowPlaying.name + "props");
     if (this.props.artistList === undefined) {
     }
     // if (this.props.hasErrored) {
@@ -218,8 +212,7 @@ const mapStateToProps = state => {
     goToPlaylistSelect: state.goToPlaylistSelect,
     userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
-    isLoading: state.itemsIsLoading,
-    nowPlaying: state.nowPlaying
+    isLoading: state.itemsIsLoading
   };
 };
 

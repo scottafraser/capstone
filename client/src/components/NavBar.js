@@ -17,6 +17,7 @@ import * as actions from "../actions/nav";
 import * as itemActions from "../actions/items";
 import SpotifyWebApi from "spotify-web-api-js";
 import SongCard from "./SongCard";
+import Emoji from "./Emoji";
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -50,6 +51,7 @@ class ButtonAppBar extends Component {
   };
 
   handleClick = event => {
+    this.getNowPlaying();
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -73,14 +75,9 @@ class ButtonAppBar extends Component {
 
   getNowPlaying = () => {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
-      console.log(response.item);
-      this.props.getSong({
-        name: response.item.name,
-        albumArt: response.item.album.images[2].url
-      });
+      this.props.getSong(response.item);
     });
     this.handleClose();
-    console.log(this.props.nowPlaying);
   };
 
   isEmpty = obj => {
@@ -90,9 +87,9 @@ class ButtonAppBar extends Component {
     return true;
   };
 
-  // componentShouldUpdate() {
-  //   this.getNowPlaying();
-  // }
+  componentDidMount() {
+    this.getNowPlaying();
+  }
 
   render() {
     const { anchorEl } = this.state;
@@ -126,7 +123,7 @@ class ButtonAppBar extends Component {
         </div>
       );
     }
-
+    console.log(this.props.nowPlaying);
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -147,14 +144,15 @@ class ButtonAppBar extends Component {
               open={open}
               onClose={this.handleClose}
             >
-              {/* <MenuItem onClick={this.handleHome}>Home</MenuItem> */}
-              <SongCard nowPlaying={this.props.nowPlaying}>
-                {/* {this.props.nowPlaying.name}
-                  <br />
-                  <img src={this.props.nowPlaying.img} /> */}
-              </SongCard>
-
-              <MenuItem />
+              <SongCard nowPlaying={this.props.nowPlaying} />
+              <MenuItem>
+                <Emoji symbol="☝️ " />
+                Make Into Playlist
+              </MenuItem>
+              <MenuItem>
+                <Emoji symbol="🍺 " />
+                Buy Me a Beer
+              </MenuItem>
               <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
             </Menu>
 
@@ -183,8 +181,8 @@ const mapStateToProps = state => {
   return {
     genre: state.genre,
     artist: state.artist,
-    showHome: state.showHome
-    // nowPlaying: state.nowPlaying
+    showHome: state.showHome,
+    nowPlaying: state.nowPlaying
   };
 };
 
