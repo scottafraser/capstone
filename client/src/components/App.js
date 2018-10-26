@@ -94,17 +94,17 @@ class App extends Component {
       } else {
         let artistId = response.artists.items[0].id;
         let foundArtists = response.artists.items;
-        // let currentArtistPlaylist = response.artists.items[0];
         this.setState({
           artistList: foundArtists
-          // currentArtist: currentArtistPlaylist
         });
-        spotifyApi
-          .getRecommendations({ seed_artists: artistId })
-          .then(response => {
-            this.props.createNewArtistPlaylist(response);
-          });
+        this.getRecommendations(artistId);
       }
+    });
+  };
+
+  getRecommendations = artistId => {
+    spotifyApi.getRecommendations({ seed_artists: artistId }).then(response => {
+      this.props.createNewArtistPlaylist(response);
     });
   };
 
