@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "simple-oauth2": "^2.2.1"
+  },
+  "scripts": {
+    "heroku-postbuild": "cd client && npm install && npm run build"
   }
 }
