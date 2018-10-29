@@ -25,8 +25,8 @@
     "nodemon": "^1.18.5"
   },
   "scripts": {
-    "start": "nodemon -r babel-register authorization_code/app.js",
+    "start": "nodemon -r dotenv/config -r babel-register server.js",
     "build": "babel . --ignore node_modules,build --out-dir build",
-    "start:prod": "node build/authorization_code/app.js"
+    "start:prod": "node -r dotenv/config -r build/server.js"
   }
 }
