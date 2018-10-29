@@ -10,7 +10,7 @@
   },
   "scripts": {
     "install": "(cd client && yarn) && (cd auth-server && yarn)",
-    "start": "concurrently \"cd client && PORT=3000 yarn start\" \"cd auth-server && PORT=8888 yarn start\"",
+    "start": "concurrently \"cd client && PORT=process.env.PORT yarn start\" \"cd auth-server && PORT=process.env.PORT yarn start\"",
     "build": "concurrently \"cd client && yarn build\" \"cd auth-server && yarn build\"",
     "start:prod": "cd auth-server && yarn start:prod",
     "heroku-postbuild": "yarn build"
