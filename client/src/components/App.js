@@ -5,15 +5,10 @@ import SpotifyWebApi from "spotify-web-api-js";
 import record from "../images/record.jpeg";
 import NavBar from "./NavBar";
 import PropTypes from "prop-types";
-// import NowPlaying from "./NowPlaying";
 import * as actions from "../actions/items";
-import * as navActions from "../actions/nav";
 import PlaylistSelect from "./PlaylistSelect";
 import Card from "./Card";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { Switch, Route, Link } from "react-router-dom";
-import About from "./About";
-import Home from "./Home";
 import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
 import ArtistListChip from "./ArtistListChip";
@@ -37,9 +32,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      artistList: [{}]
+      artistList: [],
+      currentArtist: {}
     };
   }
+
   componentDidMount() {
     var hashParams = {};
     var e,
@@ -59,6 +56,7 @@ class App extends Component {
       let userLoggedIn = token ? true : false;
       this.props.loggedIn(userLoggedIn);
     });
+    // this is the url mask
     // window.history.pushState(null, "", "/user");
   }
 
@@ -96,50 +94,97 @@ class App extends Component {
       } else {
         let artistId = response.artists.items[0].id;
         let foundArtists = response.artists.items;
-        console.log(foundArtists);
         this.setState({
           artistList: foundArtists
         });
-        spotifyApi
-          .getRecommendations({ seed_artists: artistId })
-          .then(response => {
-            this.props.createArtistPlaylist(response);
-          });
+        let type = "artist";
+        this.getRecommendations(artistId, type);
       }
     });
   };
 
+  createSongList = (e, songId) => {
+    e.preventDefault();
+    let type = "song";
+    this.getRecommendations(songId, type);
+  };
+
+  getRecommendations = (Id, type) => {
+    if (type === "artist") {
+      spotifyApi.getRecommendations({ seed_artists: Id }).then(response => {
+        this.props.createNewArtistPlaylist(response);
+      });
+    } else {
+      spotifyApi.getRecommendations({ seed_tracks: Id }).then(response => {
+        this.props.createNewArtistPlaylist(response);
+      });
+    }
+  };
+
+  updateArtist = newArtist => {
+    let artistId = newArtist;
+    spotifyApi.getRecommendations({ seed_artists: artistId }).then(response => {
+      this.props.createNewArtistPlaylist(response);
+    });
+  };
+
+  getNowPlaying = () => {
+    spotifyApi.getMyCurrentPlaybackState().then(response => {
+      this.props.getSong({
+        name: response.item.name,
+        albumArt: response.item.album.images[2].url
+      });
+    });
+  };
+
   render() {
+    if (this.props.artistList === undefined) {
+    }
     // if (this.props.hasErrored) {
     //   return <p>Sorry! There was an error loading the items</p>;
     // }
     // if (this.props.isLoading) {
     //   return <p>Loading…</p>;
     // }
-    console.log("list" + this.state.artistList);
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
-          <NavBar user={this.props.user} login={this.props.isLoggedIn} />
+          <NavBar
+            user={this.props.user}
+            login={this.props.isLoggedIn}
+            nowPlaying={this.props.nowPlaying}
+          />
           <div className="mainBody">
-            <img
-              src={record}
-              alt="record"
-              className="App-logo"
-              style={{ height: 150 }}
-            />
-            {this.props.isLoggedIn && (
-              <PlaylistSelect
-                createGenreList={this.createGenrePlaylist}
-                createArtistList={this.createArtistPlaylist}
-              />
-            )}
-            <div className="artists">
-              {this.state.artistList.map((artist, index) => (
-                <ArtistListChip key={artist.id} artist={artist} />
-              ))}
+            <div className="topInfo">
+              <div>
+                {/* {this.props.currentArtist && (
+                  <p>{this.props.currentArtist.name}</p>
+                )} */}
+              </div>
+              <div>
+                <img
+                  src={record}
+                  alt="record"
+                  className="App-logo"
+                  style={{ height: 150 }}
+                />
+                {this.props.isLoggedIn && (
+                  <PlaylistSelect
+                    createGenreList={this.createGenrePlaylist}
+                    createArtistList={this.createArtistPlaylist}
+                  />
+                )}
+              </div>
+              <div className="artistChips">
+                {this.state.artistList.map((artist, index) => (
+                  <ArtistListChip
+                    key={index}
+                    chipArtist={artist}
+                    createArtistList={this.updateArtist}
+                  />
+                ))}
+              </div>
             </div>
-
             <div className="playlists">
               {this.props.createPlaylistTracks.map((track, index) => (
                 <Card
@@ -147,6 +192,7 @@ class App extends Component {
                   name={track.name}
                   artist={track.artist}
                   album={track.album.images[1].url}
+                  createSongList={this.props.createSongList}
                 />
               ))}
             </div>
@@ -161,23 +207,22 @@ App.propTypes = {
   thisUser: PropTypes.object,
   setUser: PropTypes.func,
   isLoggedIn: PropTypes.bool,
+  showArtistSuggestions: PropTypes.bool,
   createGenrePlaylist: PropTypes.func,
-  createArtistPlaylist: PropTypes.func
-  // songCard: PropTypes.object
+  createArtistPlaylist: PropTypes.func,
+  createSongList: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     genre: state.setGenre,
     artist: state.setArtist,
-    // items: state.items,
     isLoggedIn: state.isLoggedIn,
     user: state.user,
     createPlaylistTracks: state.createPlaylistTracks,
     goToHome: state.goToHome,
     goToAbout: state.goToAbout,
     goToPlaylistSelect: state.goToPlaylistSelect,
-    // nowPlaying: state.nowPlaying,
     userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
     isLoading: state.itemsIsLoading
@@ -189,7 +234,7 @@ const mapDispatchToProps = dispatch => {
     setUser: response => dispatch(actions.setUser(response)),
     createGenrePlaylist: response =>
       dispatch(actions.userCreatePlaylist(response)),
-    createArtistPlaylist: response =>
+    createNewArtistPlaylist: response =>
       dispatch(actions.userCreatePlaylist(response)),
     loggedIn: bool => dispatch(actions.userIsLoggedIn(bool)),
     getSong: response => dispatch(actions.getUserCurrentSong(response)),
@@ -219,16 +264,6 @@ export default connect(
             {console.log(song.track.album.images)}
             <img src={song.track.album.images[1].url} />
           </li>)} */
-
-/* {this.props.isLoggedIn && (
-          <div>
-            <button onClick={() => this.getNowPlaying()}>
-              Check Now Playing
-            </button>
-            <h1>{this.props.nowPlaying.name}</h1>
-            <img src={this.props.nowPlaying.img} style={{ height: 150 }} />
-          </div>
-        )} */
 
 //   <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} /> * /}
 //  this.props.isLoggedIn && (

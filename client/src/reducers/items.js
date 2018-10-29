@@ -50,13 +50,11 @@ export function user(state = {}, action) {
   }
 }
 
-export function nowPlaying(state = { name: "Click To See", img: "" }, action) {
+export function nowPlaying(state = {}, action) {
   switch (action.type) {
     case "GET_NOW_PLAYING":
-      return {
-        name: action.nowPlaying.item.name,
-        img: action.nowPlaying.item.album.images[0].url
-      };
+      console.log("reducer fired" + action);
+      return action.nowPlaying;
     default:
       return state;
   }

@@ -34,6 +34,7 @@ export function userIsLoggedIn(bool) {
 }
 
 export function getUserCurrentSong(response) {
+  console.log("action fired");
   return {
     type: "GET_NOW_PLAYING",
     nowPlaying: response

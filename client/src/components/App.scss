@@ -7,6 +7,17 @@
   margin-top: 5%;
 }
 
+.topInfo {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.artistChips {
+  grid-template-columns: col 3 / span 3;
+  max-height: 500px;
+  overflow: scroll;
+}
 // .searchBar {
 //   size: 3em;
 // }
@@ -22,6 +33,11 @@
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
   border-radius: 50%;
+}
+
+#nowPlayingCard {
+  text-align: center;
+  padding: 2%;
 }
 
 @keyframes App-logo-spin {

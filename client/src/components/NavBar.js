@@ -14,6 +14,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
 import * as actions from "../actions/nav";
+import * as itemActions from "../actions/items";
+import SpotifyWebApi from "spotify-web-api-js";
+import SongCard from "./SongCard";
+import Emoji from "./Emoji";
+
+const spotifyApi = new SpotifyWebApi();
 
 const styles = {
   root: {
@@ -45,6 +51,7 @@ class ButtonAppBar extends Component {
   };
 
   handleClick = event => {
+    this.getNowPlaying();
     this.setState({ anchorEl: event.currentTarget });
   };
 
@@ -56,14 +63,33 @@ class ButtonAppBar extends Component {
     this.props.goToHome();
     this.handleClose();
   };
-  handleAbout = () => {
-    this.props.goToAbout();
+  handleLogout = () => {
+    window.location = "/#";
+    window.open("https://www.spotify.com/us/logout");
     this.handleClose();
   };
-  handlePlaylistSelect = () => {
-    this.props.goToPlaylistSelect();
+  // handlePlaylistSelect = () => {
+  //   this.props.goToPlaylistSelect();
+  //   this.handleClose();
+  // };
+
+  getNowPlaying = () => {
+    spotifyApi.getMyCurrentPlaybackState().then(response => {
+      this.props.getSong(response.item);
+    });
     this.handleClose();
   };
+
+  isEmpty = obj => {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) return false;
+    }
+    return true;
+  };
+
+  componentDidMount() {
+    this.getNowPlaying();
+  }
 
   render() {
     const { anchorEl } = this.state;
@@ -78,9 +104,7 @@ class ButtonAppBar extends Component {
 
     let image = "";
 
-    console.log(this.props.user.images);
-
-    if (this.props.user.images === undefined) {
+    if (this.isEmpty(this.props.user.images)) {
       image =
         "http://foodbank.bradfrostweb.com/patternlab/v7/images/fpo_avatar.png";
     } else {
@@ -99,7 +123,7 @@ class ButtonAppBar extends Component {
         </div>
       );
     }
-
+    console.log(this.props.nowPlaying);
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -120,9 +144,16 @@ class ButtonAppBar extends Component {
               open={open}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleHome}>Home</MenuItem>
-              <MenuItem onClick={this.handlePlaylistSelect}>Playlists</MenuItem>
-              <MenuItem onClick={this.handleAbout}>About</MenuItem>
+              <SongCard nowPlaying={this.props.nowPlaying} />
+              <MenuItem>
+                <Emoji symbol="☝️ " />
+                Make Into Playlist
+              </MenuItem>
+              <MenuItem>
+                <Emoji symbol="🍺 " />
+                Buy Me a Beer
+              </MenuItem>
+              <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
             </Menu>
 
             {/* <MenuIcon /> */}
@@ -142,14 +173,16 @@ class ButtonAppBar extends Component {
 }
 
 ButtonAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  getCurrentSong: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     genre: state.genre,
     artist: state.artist,
-    showHome: state.showHome
+    showHome: state.showHome,
+    nowPlaying: state.nowPlaying
   };
 };
 
@@ -158,7 +191,8 @@ const mapDispatchToProps = dispatch => {
     goToHome: response => dispatch(actions.routeToHome(response)),
     goToAbout: response => dispatch(actions.routeToAbout(response)),
     goToPlaylistSelect: response =>
-      dispatch(actions.routeToPlaylistSelect(response))
+      dispatch(actions.routeToPlaylistSelect(response)),
+    getSong: response => dispatch(itemActions.getUserCurrentSong(response))
   };
 };
 

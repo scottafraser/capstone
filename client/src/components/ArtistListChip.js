@@ -1,5 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as actions from "../actions/genre";
+import { connect } from "react-redux";
+import compose from "recompose/compose";
 import { withStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
@@ -16,32 +19,57 @@ const styles = theme => ({
   }
 });
 
-function handleClick() {
-  alert("You clicked the Chip."); // eslint-disable-line no-alert
-}
+class Chips extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      localArtist: ""
+    };
+  }
 
-function Chips(props) {
-  console.log(props);
+  handleClick = newArtist => {
+    console.log("here 1" + newArtist);
+    this.props.setArtist(newArtist);
+    this.props.createArtistList(newArtist);
+  };
 
-  // if (props.artist.images === undefined) {
-  //   avatarImage = { account_circle };
-  // }
-
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <Chip
-        label={props.artist.name}
-        onClick={handleClick}
-        className={classes.chip}
-      />
-    </div>
-  );
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <Chip
+          label={this.props.chipArtist.name}
+          onClick={() => this.handleClick(this.props.chipArtist.id)}
+          className={classes.chip}
+        />
+      </div>
+    );
+  }
 }
 
 Chips.propTypes = {
-  classes: PropTypes.object.isRequired,
-  artist: PropTypes.object
+  classes: PropTypes.object.isRequired
+  // artist: PropTypes.object
+  // createArtistList: PropTypes.func
 };
 
-export default withStyles(styles)(Chips);
+const mapStateToProps = state => {
+  return {
+    artist: state.artist
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    // setGenre: genre => dispatch(actions.setGenreState(genre)),
+    setArtist: artist => dispatch(actions.setArtistState(artist))
+  };
+};
+
+export default compose(
+  withStyles(styles, { name: "Chips" }),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(Chips);
