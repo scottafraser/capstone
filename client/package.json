@@ -1,10 +1,12 @@
 {
-  "name": "spotify-playlist-gen",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:8888",
   "dependencies": {
     "@material-ui/core": "^3.1.0",
     "@material-ui/icons": "^3.0.1",
+    "concurrently": "^4.0.1",
     "node-sass": "^4.9.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
@@ -22,8 +24,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "yarn install && yarn start"
+    "eject": "react-scripts eject"
   },
   "browserslist": [
     ">0.25%",
