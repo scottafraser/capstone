@@ -6,7 +6,7 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
-import path from "path";
+// import path from "path";
 
 require("dotenv").config();
 
@@ -19,7 +19,7 @@ var client_id = process.env.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET; // Your secret
 var redirect_uri = "http://localhost:8888/callback"; // Your redirect uri
 
-const staticFiles = express.static(path.join(__dirname, "../../client/build"));
+// const staticFiles = express.static(path.join(__dirname, "../../client/build"));
 
 /**
  * Generates a random string containing numbers and letters
@@ -45,8 +45,8 @@ var app = express();
 app
   .use(express.static(__dirname + "/public"))
   .use(cors())
-  .use(cookieParser())
-  .use(staticFiles);
+  .use(cookieParser());
+// .use(staticFiles);
 
 // var bodyParser = require("body-parser");
 // app.use(bodyParser.json()); // support json encoded bodies
