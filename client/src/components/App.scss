@@ -18,6 +18,15 @@
   max-height: 500px;
   overflow: scroll;
 }
+
+#bottom-fade {
+  z-index: 2;
+  position: fixed;
+  height: 1000px;
+  width: 100%;
+  bottom: 0%;
+  background-color: linear-gradient(rgba(0, 255, 85, 0.5), rgb(4, 92, 33));
+}
 // .searchBar {
 //   size: 3em;
 // }
@@ -31,7 +40,7 @@
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 1180px;
   border-radius: 50%;
 }
 

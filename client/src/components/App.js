@@ -156,11 +156,7 @@ class App extends Component {
           />
           <div className="mainBody">
             <div className="topInfo">
-              <div>
-                {/* {this.props.currentArtist && (
-                  <p>{this.props.currentArtist.name}</p>
-                )} */}
-              </div>
+              <div />
               <div>
                 <img
                   src={record}
@@ -183,6 +179,7 @@ class App extends Component {
                     createArtistList={this.updateArtist}
                   />
                 ))}
+                <div id="bottom-fade" />
               </div>
             </div>
             <div className="playlists">
