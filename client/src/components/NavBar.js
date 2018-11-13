@@ -68,10 +68,10 @@ class ButtonAppBar extends Component {
     window.open("https://www.spotify.com/us/logout");
     this.handleClose();
   };
-  // handlePlaylistSelect = () => {
-  //   this.props.goToPlaylistSelect();
-  //   this.handleClose();
-  // };
+
+  handleSongClick = (id) => {
+    this.props.createSongList(id);
+  };
 
   getNowPlaying = () => {
     spotifyApi.getMyCurrentPlaybackState().then(response => {
@@ -123,7 +123,6 @@ class ButtonAppBar extends Component {
         </div>
       );
     }
-    console.log(this.props.nowPlaying);
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -145,7 +144,7 @@ class ButtonAppBar extends Component {
               onClose={this.handleClose}
             >
               <SongCard nowPlaying={this.props.nowPlaying} />
-              <MenuItem>
+              <MenuItem onClick={() => this.handleSongClick( this.props.nowPlaying.id)}>
                 <Emoji symbol="☝️ " />
                 Make Into Playlist
               </MenuItem>

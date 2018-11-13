@@ -12,6 +12,7 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
 import ArtistListChip from "./ArtistListChip";
+import PlaylistStyle from "./PlaylistStyle";
 
 const theme = createMuiTheme({
   palette: {
@@ -90,7 +91,7 @@ class App extends Component {
     e.preventDefault();
     spotifyApi.searchArtists(this.props.artist).then(response => {
       if (response.artists.items[0] === undefined) {
-        console.log("no artists found");
+        alert("no artists found");
       } else {
         let artistId = response.artists.items[0].id;
         let foundArtists = response.artists.items;
@@ -103,8 +104,7 @@ class App extends Component {
     });
   };
 
-  createSongList = (e, songId) => {
-    e.preventDefault();
+  createSongList = ( songId) => {
     let type = "song";
     this.getRecommendations(songId, type);
   };
@@ -153,10 +153,13 @@ class App extends Component {
             user={this.props.user}
             login={this.props.isLoggedIn}
             nowPlaying={this.props.nowPlaying}
+            createSongList={this.createSongList}
           />
           <div className="mainBody">
             <div className="topInfo">
-              <div />
+              <div>
+                <PlaylistStyle />
+                </div>
               <div>
                 <img
                   src={record}
@@ -179,7 +182,7 @@ class App extends Component {
                     createArtistList={this.updateArtist}
                   />
                 ))}
-                <div id="bottom-fade" />
+                {/* <div id="bottom-fade" /> */}
               </div>
             </div>
             <div className="playlists">

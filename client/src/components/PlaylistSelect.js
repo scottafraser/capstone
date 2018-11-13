@@ -117,6 +117,7 @@ class PlaylistSelect extends React.Component {
                 onChange={this.handleGenreChange}
                 margin="normal"
                 variant="outlined"
+                // onSubmit={this.onGenreClick}
               />
             </form>
             <Button
