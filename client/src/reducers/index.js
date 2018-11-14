@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import { setGenre, setArtist } from "./genreReducer";
 import { createPlaylistTracks } from "./createPlaylist";
-import { goToHome, goToAbout, goToPlaylistSelect } from './navReducer'
 import {
   items,
   itemsHasErrored,
@@ -22,8 +21,5 @@ export default combineReducers({
   itemsIsLoading,
   createPlaylistTracks,
   setGenre,
-  setArtist,
-  goToHome,
-  goToAbout,
-  goToPlaylistSelect
+  setArtist
 });

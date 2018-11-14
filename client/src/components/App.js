@@ -186,8 +186,9 @@ class App extends Component {
               </div>
             </div>
             <div className="playlists">
-              {this.props.createPlaylistTracks.map((track, index) => (
+              {this.props.createPlaylistTracks.map((track) => (
                 <Card
+                  key={track.id}
                   id={track.id}
                   name={track.name}
                   artist={track.artist}
@@ -261,7 +262,6 @@ export default connect(
             <br />
             {song.track.album.name}
             <br />
-            {console.log(song.track.album.images)}
             <img src={song.track.album.images[1].url} />
           </li>)} */
 

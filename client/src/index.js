@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 // import ErrorBoundry from "./components/ErrorBoundry";
 
 const store = configureStore();
-console.log(store.getState());
+
 
 ReactDOM.render(
   <Provider store={store}>

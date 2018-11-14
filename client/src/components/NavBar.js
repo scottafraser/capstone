@@ -1,3 +1,4 @@
+import compose from "recompose/compose";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
@@ -12,8 +13,6 @@ import classNames from "classnames";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { connect } from "react-redux";
-import compose from "recompose/compose";
-import * as actions from "../actions/nav";
 import * as itemActions from "../actions/items";
 import SpotifyWebApi from "spotify-web-api-js";
 import SongCard from "./SongCard";
@@ -59,10 +58,7 @@ class ButtonAppBar extends Component {
     this.setState({ anchorEl: null });
   };
 
-  handleHome = () => {
-    this.props.goToHome();
-    this.handleClose();
-  };
+
   handleLogout = () => {
     window.location = "/#";
     window.open("https://www.spotify.com/us/logout");
@@ -157,7 +153,7 @@ class ButtonAppBar extends Component {
 
             {/* <MenuIcon /> */}
             <Typography
-              variant="title"
+              variant="h3"
               color="inherit"
               className={classes.grow}
             >
@@ -187,10 +183,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    goToHome: response => dispatch(actions.routeToHome(response)),
-    goToAbout: response => dispatch(actions.routeToAbout(response)),
-    goToPlaylistSelect: response =>
-      dispatch(actions.routeToPlaylistSelect(response)),
     getSong: response => dispatch(itemActions.getUserCurrentSong(response))
   };
 };

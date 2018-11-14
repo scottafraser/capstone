@@ -4,9 +4,7 @@ import * as actions from "../actions/genre";
 import { connect } from "react-redux";
 import compose from "recompose/compose";
 import { withStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
 import Chip from "@material-ui/core/Chip";
-import FaceIcon from "@material-ui/icons/Face";
 
 const styles = theme => ({
   root: {
@@ -28,7 +26,6 @@ class Chips extends React.Component {
   }
 
   handleClick = newArtist => {
-    console.log("here 1" + newArtist);
     this.props.setArtist(newArtist);
     this.props.createArtistList(newArtist);
   };
