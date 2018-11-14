@@ -13,6 +13,7 @@ import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
 import ArtistListChip from "./ArtistListChip";
 import PlaylistStyle from "./PlaylistStyle";
+import GenreChips from './GenreChips'
 
 const theme = createMuiTheme({
   palette: {
@@ -34,6 +35,7 @@ class App extends Component {
     super(props);
     this.state = {
       artistList: [],
+      genreList: [],
       currentArtist: {}
     };
   }
@@ -79,13 +81,20 @@ class App extends Component {
     });
   }
 
-  createGenrePlaylist = e => {
-    e.preventDefault();
+  createGenrePlaylist = () => {
+    this.findGenreSeeds()
     let genre = this.props.genre;
     spotifyApi.getRecommendations({ seed_genres: genre }).then(response => {
       this.props.createGenrePlaylist(response);
     });
+  
   };
+
+  findGenreSeeds = () => {
+    spotifyApi.getAvailableGenreSeeds().then(response =>
+      this.setState({genreList : response.genres })
+    ); 
+  }
 
   createArtistPlaylist = e => {
     e.preventDefault();
@@ -146,35 +155,20 @@ class App extends Component {
     // if (this.props.isLoading) {
     //   return <p>Loading…</p>;
     // }
-    return (
-      <MuiThemeProvider theme={theme}>
+    console.log(this.state.genreList.genres);
+    return <MuiThemeProvider theme={theme}>
         <div className="App">
-          <NavBar
-            user={this.props.user}
-            login={this.props.isLoggedIn}
-            nowPlaying={this.props.nowPlaying}
-            createSongList={this.createSongList}
-          />
+          <NavBar user={this.props.user} login={this.props.isLoggedIn} nowPlaying={this.props.nowPlaying} createSongList={this.createSongList} />
           <div className="mainBody">
             <div className="topInfo">
               <div>
                 <PlaylistStyle />
-                </div>
-              <div>
-                <img
-                  src={record}
-                  alt="record"
-                  className="App-logo"
-                  style={{ height: 150 }}
-                />
-                {this.props.isLoggedIn && (
-                  <PlaylistSelect
-                    createGenreList={this.createGenrePlaylist}
-                    createArtistList={this.createArtistPlaylist}
-                  />
-                )}
               </div>
-              <div className="artistChips">
+              <div>
+                <img src={record} alt="record" className="App-logo" style={{ height: 150 }} />
+                {this.props.isLoggedIn && <PlaylistSelect createGenreList={this.createGenrePlaylist} createArtistList={this.createArtistPlaylist} />}
+              </div>
+               <div className="artistChips">
                 {this.state.artistList.map((artist, index) => (
                   <ArtistListChip
                     key={index}
@@ -182,11 +176,17 @@ class App extends Component {
                     createArtistList={this.updateArtist}
                   />
                 ))}
-                {/* <div id="bottom-fade" /> */}
+                {this.state.genreList.map((genre, index) => (
+                  <GenreChips
+                    key={index}
+                    chipGenre={genre}
+                    createGenreList={this.createGenrePlaylist}
+                  />
+                ))}
               </div>
             </div>
             <div className="playlists">
-              {this.props.createPlaylistTracks.map((track) => (
+              {this.props.createPlaylistTracks.map(track => (
                 <Card
                   key={track.id}
                   id={track.id}
@@ -199,8 +199,7 @@ class App extends Component {
             </div>
           </div>
         </div>
-      </MuiThemeProvider>
-    );
+      </MuiThemeProvider>;
   }
 }
 
@@ -221,9 +220,6 @@ const mapStateToProps = state => {
     isLoggedIn: state.isLoggedIn,
     user: state.user,
     createPlaylistTracks: state.createPlaylistTracks,
-    goToHome: state.goToHome,
-    goToAbout: state.goToAbout,
-    goToPlaylistSelect: state.goToPlaylistSelect,
     userPlaylists: state.userPlaylists,
     hasErrored: state.itemsHasErrored,
     isLoading: state.itemsIsLoading
